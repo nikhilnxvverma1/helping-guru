@@ -14,7 +14,7 @@ if(iWantToUseADatabase){//configure and setup OrientDB database before launching
 	let databaseOptions=new DatabaseOptions();//<--there are a total of 7 properties
 	databaseOptions.username="root";
 	databaseOptions.password="root";
-	databaseOptions.name="sanity";
+	databaseOptions.name="helping-guru";
 	//change or add more properties as needed
 
 	connectToDatabase(databaseOptions).
