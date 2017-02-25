@@ -5,15 +5,19 @@ import path = require('path');
 import orientjs = require('orientjs');
 import winston = require('winston');
 import bodyParser = require('body-parser');
+import { UserBackend,AuthenticationResult,statusCodeForLogin,statusCodeForSignup } from './user.backend';
 
 export class ServerApp {
     
 	private app: express.Application;
 	private db:orientjs.Db;
+	private userBackend:UserBackend;
+	
     
 	constructor(db?:orientjs.Db) {
 		this.app = express();
 		this.db=db;
+		this.userBackend=new UserBackend(this.db);
 	}
     
     public setRoutes() {        //the order matters here
@@ -33,6 +37,29 @@ export class ServerApp {
 
 	private configureAPIRoutes(){
 
+		//create new user
+		this.app.post('/api/create-user', (req:express.Request, res:express.Response) => {
+			winston.debug("Attempting to create new user");
+			this.userBackend.checkAndCreateNewUser((<any>req).body).
+			then((attempt:number)=>{
+				//respond back with an appropriate status code
+				jsonHeader(res).status(statusCodeForSignup(attempt)).send(JSON.stringify(attempt));
+			});
+		});
+
+		//login authentication
+		this.app.post('/api/authenticate-user', (req:express.Request, res:express.Response) => {
+			winston.debug("Attempting to login user");
+			this.userBackend.authenticateUser((<any>req).body).
+			then((result:AuthenticationResult)=>{
+				//if authentic, store the user model in the session
+				if(result.attempt==0){
+					(<any>req).session.user=result.user;
+				}
+				//respond back with an appropriate status code
+				jsonHeader(res).status(statusCodeForLogin(result.attempt)).send(JSON.stringify(result.attempt));
+			});
+		});
 
 	}
 
