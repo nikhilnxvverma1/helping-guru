@@ -49,19 +49,25 @@ export class ServerApp {
 
 		//rough work
 		this.app.get('/api/rough', (req:express.Request, res:express.Response) => {
-			winston.debug("Rough work for development purposes");
-			//Do rough work in this end point
-			let options:any = {
-			uri: 'https://randomuser.me/api/',
-			qs: {
-				results: 1,
-				exc: 'location,dbo,registered,phone,cell,id,nat'
-			},
-			json: true
-		}
-		return requestPromise(options).then((v:any)=>{
-			res.send(v);
-		});
+            winston.debug("Rough work for development purposes");
+            //Do rough work in this end point
+            /*let options:any = {
+                uri: 'https://randomuser.me/api/',
+                qs: {
+                    results: 1,
+                    exc: 'location,dbo,registered,phone,cell,id,nat'
+                },
+                json: true
+            }
+            return requestPromise(options).then((v:any)=>{
+                res.send(v);
+            });*/
+            //--------------------------------
+            let mock = new MockRetriever();
+            return mock.buildSingleProject().then((project:any)=>{
+                console.log(project);
+                res.send(project);
+            });
 			
 			//--------------------------------
 		});

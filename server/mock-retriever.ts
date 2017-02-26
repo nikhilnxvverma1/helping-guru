@@ -13,61 +13,66 @@ export class MockRetriever{
 	/**
 	 * Returns a dummy instance of a single project that houses everything: contributors, mentors, progression, contribution, thread and comments 
 	 */
-	buildSingleProject():Project{
+	buildSingleProject():Promise<Project>{
 
 		let project = new Project();
 		project.title = "Reactor Particles";
 		project.tldr = "Scientific project during HackBU";
 		project.description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
 		project.techStack = ["node", "angular", "express"];
-		project.progression = this.retrieveProgression();
-		for(let i:number = 0; i < 3; i++){
-			project.threads[i] = this.retrieveThread(`update number ${ i }451`);
-		}
-		for(let i:number = 0; i < 4; i++){
-			project.contributorList[i] = this.retrieveUser("Luis the " + i);
-		}
-		project.mentorList[0] = this.retrieveUser("Jake");
-		project.threads
+		
+		return this.retrieveRandomUser(15).then((results:any)=>{
+			for(let i:number = 0; i < 3; i++){
+				let user = this.parseUser(results[i]);
+				project.threads[i] = this.retrieveThread(`update number ${ i }451`, results); //11-14
+			} //0-2
+			project.progression = this.retrieveProgression(results); //3-5
+			for(let i:number = 6; i < 10; i++){
+				let user = this.parseUser(results[i]);
+				project.contributorList[i-6] = user;
+			} //6-9
+			project.mentorList[0] = this.parseUser(results[10]); //10
+			return Promise.resolve(project);
+		});
 
-		return project;//TODO return a full project with everytinng configured
 	}
 
-	private retrieveContribution(addition: string): Contribution {
+	private retrieveContribution(addition: string, user:User): Contribution {
 		let contribution = new Contribution();
 		contribution.message = `I added authentication on file ${ addition }`;
-		contribution.user = this.retrieveUser("Eric");
+		contribution.user = user;
 		contribution.date = new Date();
 		return contribution;
 	}
 
-	private retrieveProgression(): Progression {
+	private retrieveProgression(users:any): Progression {
 		let progression = new Progression();
-		for(let i:number = 0; i < 6; i++){
-			progression.updates[i] = this.retrieveContribution(`${ i }789`);
+		for(let i:number = 3; i < 6; i++){
+			progression.updates[i-3] = this.retrieveContribution(`${ i }789`, users[i]);
 		}
 		return progression;
 	}
 
-	private retrieveComment(sufix: string): Comment {
+	private retrieveComment(sufix: string, user:User): Comment {
 		let comment = new Comment();
 		comment.message = `Try rolling back to before the update ${ sufix }`;
-		comment.user = this.retrieveUser("Garred");
+		comment.user = user;
 		return comment;
 	}
 
-	private retrieveThread(sufix: string): Thread {
+	private retrieveThread(sufix: string, users:any): Thread {
 		let thread = new Thread();
 		thread.title = `Loop won't work during ${ sufix }`;
 		thread.description = "My for each loop stopped working after the last update number 3489";
-		thread.poster = this.retrieveUser("Gordon");
-		for(let i:number = 0; i < 6; i++){
-			thread.commentList[i] = this.retrieveComment(`number ${ i }829`);
+		thread.poster = users[11];
+		for(let i:number = 12; i < 15; i++){
+			let user = this.parseUser(users[i]);
+			thread.commentList[i-12] = this.retrieveComment(`number ${ i }829`, user);
 		}
 		return thread;
 	}
 
-	private retrieveUser(sufix: string): User {
+	/*private retrieveUser(sufix: string): User {
 		let user = new User();
 		user.firstName = `Jon ${ sufix }`;
 		user.lastName = "Brown";
@@ -79,49 +84,37 @@ export class MockRetriever{
 		user.email = "email@mail.com";
 		user.password = "pass1234";
 		return user;
-	}
+	}*/
 
-	retrieveRandomUser():Promise<User> {
+	private retrieveRandomUser(results:number):Promise<any> {
 
 		let options:any = {
 			uri: 'https://randomuser.me/api/',
 			qs: {
-				results: 1,
+				results: results,
 				exc: 'location,dbo,registered,phone,cell,id,nat'
 			},
 			json: true
 		}
 
 		return request(options).then(function(results: any){
-			let user = new User();
-
-			user.firstName = results[0].name.first;
-			user.lastName = results[0].name.last;
-			user.fullPhotoUrl = results[0].picture.large;
-			user.mediumPhotoUrl = results[0].picture.medium;
-			user.thumbnailUrl = results[0].picture.thumbnail;
-			user.points = 5.2;
-			user.gender = results[0].gender;
-			user.email = results[0].email;
-			user.password = results[0].login.password;
-
-			return Promise.resolve(user);
+			return Promise.resolve(results.results);
 		}).catch(function(error: any){
 			console.log(error);
 		});
+	}
 
-		/*https.get("https://randomuser.me/api/?results=1&exc=location,dbo,registered,phone,cell,id,nat", function(response){
-			if(response.statusCode == 200){
-				let body:string = '';
-				response.on('data', function (info) {
-					body += info;
-				});
-				response.on('end', function () {
-					let result:string = JSON.parse(body);
-				});
-			}
-		}).on('error', function (e) {
-			console.log(e.message);
-		});*/
+	private parseUser(result:any):User{
+		let user = new User();
+		user.firstName = result.name.first;
+		user.lastName = result.name.last;
+		user.fullPhotoUrl = result.picture.large;
+		user.mediumPhotoUrl = result.picture.medium;
+		user.thumbnailUrl = result.picture.thumbnail;
+		user.points = Math.random() * (11 - 0) + 0;
+		user.gender = result.gender;
+		user.email = result.email;
+		user.password = result.login.password;
+		return user;
 	}
 }
