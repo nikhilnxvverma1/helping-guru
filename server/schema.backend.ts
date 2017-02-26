@@ -28,10 +28,11 @@ export class SchemaBackend{
 	 * and if not, creates the required classes.
 	 */
 	ensureDatabaseSchema():Promise<ojs.Class>{
-		return this.ensureLocation().
-		then((createdClass:ojs.Class)=>{
-			return this.ensureUser();
-		});
+		return this.ensureUser();
+		// return this.ensureLocation().
+		// then((createdClass:ojs.Class)=>{
+		// 	return this.ensureUser();
+		// });
 	}
 
 	private ensureUser():Promise<ojs.Class>{
@@ -41,9 +42,8 @@ export class SchemaBackend{
 			{name:"email",type:"String"},
 			{name:"password",type:"String"},
 			{name:"gender",type:"String"},
-			{name:"linkToProfilePic",type:"String"},
-			{name:"dateOfBirth",type:"Date"},
-			{name:"address",type:"Embedded", linkedClass:LOCATION},
+			{name:"thumbnailUrl",type:"String"},
+			{name:"dateOfBirth",type:"Date"}
 		],"V");//extends the generic 'Vertex' class
 	}
 

@@ -5,15 +5,21 @@ import path = require('path');
 import orientjs = require('orientjs');
 import winston = require('winston');
 import bodyParser = require('body-parser');
+import session = require('express-session');
+import { UserBackend,AuthenticationResult,statusCodeForLogin,statusCodeForSignup } from './user.backend';
+import requestPromise=require('request-promise');
 
 export class ServerApp {
     
 	private app: express.Application;
 	private db:orientjs.Db;
+	private userBackend:UserBackend;
+	
     
 	constructor(db?:orientjs.Db) {
 		this.app = express();
 		this.db=db;
+		this.userBackend=new UserBackend(this.db);
 	}
     
     public setRoutes() {        //the order matters here
@@ -22,6 +28,9 @@ export class ServerApp {
 		this.app.use(bodyParser.urlencoded({
 			extended:false
 		}));
+		//TODO WARNING: the secret should not be stored in code.(Dev purposes only)
+		this.app.use(session({secret:"sdf923jk23asf01gasds42",saveUninitialized:true,resave:false}));
+
 		this.configureAPIRoutes();
 		
 		//static resources (is amongst the main folders in the root of the project)
@@ -33,6 +42,48 @@ export class ServerApp {
 
 	private configureAPIRoutes(){
 
+		//rough work
+		this.app.get('/api/rough', (req:express.Request, res:express.Response) => {
+			winston.debug("Rough work for development purposes");
+			//Do rough work in this end point
+			let options:any = {
+			uri: 'https://randomuser.me/api/',
+			qs: {
+				results: 1,
+				exc: 'location,dbo,registered,phone,cell,id,nat'
+			},
+			json: true
+		}
+		return requestPromise(options).then((v:any)=>{
+			res.send(v);
+		});
+			
+			//--------------------------------
+		});
+
+		//create new user
+		this.app.post('/api/create-user', (req:express.Request, res:express.Response) => {
+			winston.debug("Attempting to create new user");
+			this.userBackend.checkAndCreateNewUser((<any>req).body).
+			then((attempt:number)=>{
+				//respond back with an appropriate status code
+				jsonHeader(res).status(statusCodeForSignup(attempt)).send(JSON.stringify(attempt));
+			});
+		});
+
+		//login authentication
+		this.app.post('/api/authenticate-user', (req:express.Request, res:express.Response) => {
+			winston.debug("Attempting to login user");
+			this.userBackend.authenticateUser((<any>req).body).
+			then((result:AuthenticationResult)=>{
+				//if authentic, store the user model in the session
+				if(result.attempt==0){
+					(<any>req).session.user=result.user;
+				}
+				//respond back with an appropriate status code
+				jsonHeader(res).status(statusCodeForLogin(result.attempt)).send(JSON.stringify(result.attempt));
+			});
+		});
 
 	}
 
