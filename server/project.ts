@@ -14,4 +14,6 @@ export class Project{
 	progression:Progression;
 	techStack:string[]=[];
 	threads:Thread[]=[];
+	mediumPhotoUrl:string;
+	headerUrl:string;
 }

@@ -64,7 +64,8 @@ export class ServerApp {
             });*/
             //--------------------------------
 			let mock = new MockRetriever();
-			res.send(""+mock.buildSingleProject());
+			let project:any = mock.buildSingleProject();
+			res.send(project);
 			
 			//--------------------------------
 		});

@@ -7,6 +7,7 @@ import { Contribution } from './contribution';
 import Promise = require('bluebird');
 
 let request:any = require('request-promise');
+let mock_data:any = require('./MOCK_DATA.json');
 
 export class MockRetriever{
 
@@ -16,9 +17,12 @@ export class MockRetriever{
 	buildSingleProject():Project{
 
 		let project = new Project();
-		project.title = "Reactor Particles";
+		let randomIndex=Math.floor((Math.random() * mock_data.length) + 1);
+		project.title = mock_data[randomIndex].title;
 		project.tldr = "Scientific project during HackBU";
-		project.description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
+		project.description = mock_data[randomIndex].description;
+		project.mediumPhotoUrl = mock_data[randomIndex].mediumPhotoUrl;
+		project.headerUrl = mock_data[randomIndex].headerUrl;
 		project.techStack = ["node", "angular", "express"];
 		for(let i:number = 0; i < 4; i++){
 			project.contributorList[i] = this.retrieveUser("Luis the " + i);
@@ -37,9 +41,11 @@ export class MockRetriever{
 	buildSingleProjectUsingRandomApi():Promise<Project>{
 
 		let project = new Project();
-		project.title = "Reactor Particles";
+		let randomIndex=Math.floor((Math.random() * mock_data.length) + 1);
+		project.title = mock_data[randomIndex].title;
 		project.tldr = "Scientific project during HackBU";
-		project.description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
+		project.description = mock_data[randomIndex].description;
+		project.mediumPhotoUrl = mock_data[randomIndex].mediumPhotoUrl;
 		project.techStack = ["node", "angular", "express"];
 		
 		return this.retrieveRandomUser(15).then((results:any)=>{
@@ -95,7 +101,7 @@ export class MockRetriever{
 
 	private randomItem(list:any[]):any{
 	
-		let randomIndex=Math.floor((Math.random() * list.length) + 1);;
+		let randomIndex=Math.floor((Math.random() * list.length) + 1);
 		return list[randomIndex];
 	}
 
