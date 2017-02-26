@@ -3,6 +3,7 @@ import { Thread } from './thread';
 import { Progression } from './progression';
 
 export class Project{
+	rid:string;
 	/**Main project title */
 	title:string;
 	/** this is the TLDR one liner for the project */

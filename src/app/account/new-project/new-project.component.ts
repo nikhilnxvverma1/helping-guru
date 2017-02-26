@@ -12,7 +12,7 @@ import { Project } from '../../../models/project';
 export class NewProjectComponent implements OnInit {
 
 	project:Project=new Project();
-	errorMessage:string;
+	message:string;
 
 	constructor(
 		private router:Router,
@@ -23,7 +23,15 @@ export class NewProjectComponent implements OnInit {
 	}
 
 	createNewProject(){
-		
+		this.projectService.createNewProject(this.project).subscribe((n:number)=>{
+			if(n==0){
+				this.message="Project created";
+			}else if(n==2){
+				this.message="Project name already exists";
+			}
+		},(error:Error)=>{
+			this.message="Some error on server, please try again later";
+		});
 	}
 
 	

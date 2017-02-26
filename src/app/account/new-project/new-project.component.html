@@ -1,9 +1,10 @@
-<form (ngSubmit)="doLogin()" #loginForm="ngForm">
-	<input type="text" placeholder="email" name="email" [(ngModel)]="attempt.email" required>
-	<input type="password" placeholder="password" name="password" [(ngModel)]="attempt.password" required>
-	<button [disabled]="!loginForm.form.valid" type="button" (click)="doLogin()">Submit</button>
+<form (ngSubmit)="createNewProject()" #projectForm="ngForm">
+	<input type="text" placeholder="Title" name="title" [(ngModel)]="project.title" required>
+	<input type="text" placeholder="Description" name="description" [(ngModel)]="project.description" required>
+	<input type="text" placeholder="One line description" name="tldr" [(ngModel)]="project.tldr" required>
+	<button [disabled]="!projectForm.form.valid" type="button" (click)="createNewProject()">Create</button>
 </form>
 
-<ng-container *ngIf="errorMessage!=null">
-	<div>{{errorMessage}}</div>
+<ng-container *ngIf="message!=null">
+	<div>{{message}}</div>
 </ng-container>

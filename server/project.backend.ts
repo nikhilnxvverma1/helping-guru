@@ -32,7 +32,7 @@ export class ProjectBackend{
 		}).one().then((p:any)=>{
 			return this.setUserAsContributor(user["@rid"],p["@rid"]);
 		}).then((b:boolean)=>{
-			return b?0:3;//success only if true
+			return b?0:1;//success only if true
 		}).catch((error:Error)=>{
 			winston.error("New Project insertion: "+error.message);
 			return 1;

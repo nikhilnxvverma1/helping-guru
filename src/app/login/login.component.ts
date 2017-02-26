@@ -25,8 +25,8 @@ export class LoginComponent implements OnInit {
 		// call the service
 		console.debug("Attempting form submit");
 		this.userService.login(this.attempt).subscribe((pass:boolean)=>{
-			console.debug("moving to dashboard");
-			this.router.navigate(["/home/dashboard"]);
+			console.debug("moving to home ");
+			this.router.navigate(["/home"]);
 		},(error:any)=>{
 			if(error.status==401 && error._body==3){
 				console.log("Invalid username or password");
