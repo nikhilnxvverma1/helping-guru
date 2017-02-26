@@ -8,6 +8,7 @@ import bodyParser = require('body-parser');
 import session = require('express-session');
 import { UserBackend,AuthenticationResult,statusCodeForLogin,statusCodeForSignup } from './user.backend';
 import requestPromise=require('request-promise');
+import { MockRetriever } from './mock-retriever';
 
 export class ServerApp {
     
@@ -83,6 +84,49 @@ export class ServerApp {
 				//respond back with an appropriate status code
 				jsonHeader(res).status(statusCodeForLogin(result.attempt)).send(JSON.stringify(result.attempt));
 			});
+		});
+
+		//get a single project
+		this.app.get('/api/project', (req:express.Request, res:express.Response) => {
+			winston.debug("Retrieving a single project");
+
+			//Dummy testing
+			let project=new MockRetriever().buildSingleProject();
+			//purposely nullifying for testing purposes
+			project.progression=null;
+			project.threads=null;
+
+			jsonHeader(res).send(JSON.stringify(project));
+		});
+
+		//get a project's threads
+		this.app.get('/api/project/threads', (req:express.Request, res:express.Response) => {
+			winston.debug("Retrieving a single project's threads");
+
+			//Dummy testing
+			let project=new MockRetriever().buildSingleProject();
+		
+			jsonHeader(res).send(JSON.stringify(project.threads));
+		});
+
+		//get the comments in a project's threads
+		this.app.get('/api/project/threads/comments', (req:express.Request, res:express.Response) => {
+			winston.debug("Retrieving comments in a project's thread");
+
+			//Dummy testing
+			let project=new MockRetriever().buildSingleProject();
+		
+			jsonHeader(res).send(JSON.stringify(project.threads[0].commentList));
+		});
+
+		//get the progression report of a project
+		this.app.get('/api/project/progression', (req:express.Request, res:express.Response) => {
+			winston.debug("Retrieving a single project's progression report");
+
+			//Dummy testing
+			let project=new MockRetriever().buildSingleProject();
+		
+			jsonHeader(res).send(JSON.stringify(project.progression));
 		});
 
 	}
