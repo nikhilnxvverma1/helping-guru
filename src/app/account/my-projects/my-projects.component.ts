@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Input,Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { User } from '../../../models/user';
+import { Project } from '../../../models/project';
+import { ProjectService } from '../../helpers/project.service';
 
 @Component({
   selector: 'app-my-projects',
@@ -7,9 +12,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MyProjectsComponent implements OnInit {
 
-  constructor() { }
+	@Input() user:User;
+	projectList:Project[];
 
-  ngOnInit() {
-  }
+	constructor(
+		private router:Router,
+		private projectService:ProjectService
+	) { }
+
+	ngOnInit() {
+		this.projectService.projectForLoggedInUser().subscribe((projectList:Project[])=>{
+			console.debug("Received "+projectList.length+" projects from server");
+			this.projectList=projectList;
+		});
+	}
 
 }

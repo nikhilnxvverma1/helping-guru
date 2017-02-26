@@ -8,6 +8,7 @@ import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { MyProjectsComponent } from './my-projects/my-projects.component';
 import { AccountRoutingModule } from './account-routing.module';
+import { AccountService } from '../helpers/account.service';
 import { ProjectService } from '../helpers/project.service';
 import { ProjectItemComponent } from './project-item/project-item.component';
 import { ProjectModule } from './project/project.module';
@@ -23,7 +24,7 @@ import { SearchResultComponent } from './search-result/search-result.component';
 	ProjectModule,
   ],
   schemas:[CUSTOM_ELEMENTS_SCHEMA],
-  providers: [ProjectService],
+  providers: [AccountService,ProjectService],
   declarations: [HeaderComponent, HomeComponent, MyProjectsComponent, ProjectItemComponent, AllProjectsComponent, SearchResultComponent]
 })
 export class AccountModule { }
