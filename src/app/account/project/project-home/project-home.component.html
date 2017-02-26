@@ -1,4 +1,10 @@
-<p>
-  project-home works!
-</p>
+<ng-container *ngIf="project!=null">
+	<p>
+	{{project.title}}
+	</p>
+	<p>
+	{{project.tldr}}
+	</p>
+</ng-container>
+
 <router-outlet></router-outlet>
