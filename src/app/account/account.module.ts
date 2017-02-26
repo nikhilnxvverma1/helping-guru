@@ -8,15 +8,20 @@ import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { MyProjectsComponent } from './my-projects/my-projects.component';
 import { AccountRoutingModule } from './account-routing.module';
+import { ProjectService } from '../helpers/project.service';
+import { ProjectItemComponent } from './project-item/project-item.component';
+import { ProjectModule } from './project/project.module';
 
 @NgModule({
   imports: [
     CommonModule,
 	BrowserModule,
 	FormsModule,
-	AccountRoutingModule
+	AccountRoutingModule,
+	ProjectModule,
   ],
   schemas:[CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [HeaderComponent, HomeComponent, MyProjectsComponent]
+  providers: [ProjectService],
+  declarations: [HeaderComponent, HomeComponent, MyProjectsComponent, ProjectItemComponent]
 })
 export class AccountModule { }
