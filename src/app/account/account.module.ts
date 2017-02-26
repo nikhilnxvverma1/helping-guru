@@ -14,6 +14,13 @@ import { ProjectItemComponent } from './project-item/project-item.component';
 import { ProjectModule } from './project/project.module';
 import { AllProjectsComponent } from './all-projects/all-projects.component';
 import { SearchResultComponent } from './search-result/search-result.component';
+import { ProjectHomeComponent } from './project/project-home/project-home.component';
+import { DescriptionComponent } from './project/description/description.component';
+import { ProgressionComponent } from './project/progression/progression.component';
+import { DiscussionComponent } from './project/discussion/discussion.component';
+import { ThreadComponent } from './project/thread/thread.component';
+import { CommentComponent } from './project/comment/comment.component';
+import { ContributionComponent } from './project/contribution/contribution.component';
 
 @NgModule({
   imports: [
@@ -21,10 +28,12 @@ import { SearchResultComponent } from './search-result/search-result.component';
 	BrowserModule,
 	FormsModule,
 	AccountRoutingModule,
-	ProjectModule,
+	// ProjectModule,
   ],
   schemas:[CUSTOM_ELEMENTS_SCHEMA],
   providers: [AccountService,ProjectService],
-  declarations: [HeaderComponent, HomeComponent, MyProjectsComponent, ProjectItemComponent, AllProjectsComponent, SearchResultComponent]
+  declarations: [HeaderComponent, HomeComponent, MyProjectsComponent, ProjectItemComponent, AllProjectsComponent, SearchResultComponent,
+  	ProjectHomeComponent, DescriptionComponent, ProgressionComponent, DiscussionComponent, ThreadComponent, CommentComponent, ContributionComponent
+  ]
 })
 export class AccountModule { }
