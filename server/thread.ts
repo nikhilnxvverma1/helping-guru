@@ -4,4 +4,5 @@ export class Thread{
 	title:string;
 	description:string;
 	poster:User;
+	comments:Comment[]=[];
 }

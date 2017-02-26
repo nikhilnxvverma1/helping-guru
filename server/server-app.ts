@@ -7,6 +7,7 @@ import winston = require('winston');
 import bodyParser = require('body-parser');
 import session = require('express-session');
 import { UserBackend,AuthenticationResult,statusCodeForLogin,statusCodeForSignup } from './user.backend';
+import requestPromise=require('request-promise');
 
 export class ServerApp {
     
@@ -40,6 +41,25 @@ export class ServerApp {
 	}
 
 	private configureAPIRoutes(){
+
+		//rough work
+		this.app.get('/api/rough', (req:express.Request, res:express.Response) => {
+			winston.debug("Rough work for development purposes");
+			//Do rough work in this end point
+			let options:any = {
+			uri: 'https://randomuser.me/api/',
+			qs: {
+				results: 1,
+				exc: 'location,dbo,registered,phone,cell,id,nat'
+			},
+			json: true
+		}
+		return requestPromise(options).then((v:any)=>{
+			res.send(v);
+		});
+			
+			//--------------------------------
+		});
 
 		//create new user
 		this.app.post('/api/create-user', (req:express.Request, res:express.Response) => {
