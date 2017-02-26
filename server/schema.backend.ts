@@ -32,7 +32,10 @@ export class SchemaBackend{
 		return this.ensureUser().
 		then((createdClass:ojs.Class)=>{
 			return this.ensureProject();
-		})
+		}).
+		then((c:ojs.Class)=>{
+			return this.ensureUserHasReferencesToProject();
+		});
 		// return this.ensureLocation().
 		// then((createdClass:ojs.Class)=>{
 		// 	return this.ensureUser();
@@ -60,9 +63,25 @@ export class SchemaBackend{
 			{name:"mediumPhotoUrl",type:"String"},
 			{name:"techStack",type:"EmbeddedList", linkedType:"String"},
 			{name:"contributorList",type:"LinkList", linkedClass:"User"},
-			{name:"mentorList",type:"LinkList", linkedClass:"User"},
+			{name:"mentorList",type:"LinkList", linkedClass:USER},
 			
 		]);
+	}
+
+	private ensureUserHasReferencesToProject():Promise<ojs.Class>{
+		return this.db.class.get('User').
+		then((c:ojs.Class)=>{
+			return c.property.create({name:"projectsContributed", type:"LinkList", linkedClass:PROJECT}).
+			then((p:ojs.Property)=>{
+				return c;
+			})
+		}).
+		then((c:ojs.Class)=>{
+			return c.property.create({name:"projectsMentored", type:"LinkList", linkedClass:PROJECT}).
+			then((p:ojs.Property)=>{
+				return c;
+			})
+		});
 	}
 
 	private ensureLocation():Promise<ojs.Class>{

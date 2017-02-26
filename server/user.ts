@@ -12,5 +12,6 @@ export class User{
 	mediumPhotoUrl:string;
 	fullPhotoUrl:string;
 	points:number;
-	projectList:Project[]=[]
+	projectList:Project[]=[];
+	projectsMentored:Project[]=[];
 }
