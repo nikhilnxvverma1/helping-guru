@@ -63,11 +63,8 @@ export class ServerApp {
                 res.send(v);
             });*/
             //--------------------------------
-            let mock = new MockRetriever();
-            return mock.buildSingleProject().then((project:any)=>{
-                console.log(project);
-                res.send(project);
-            });
+			let mock = new MockRetriever();
+			res.send(""+mock.buildSingleProject());
 			
 			//--------------------------------
 		});

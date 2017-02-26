@@ -13,7 +13,28 @@ export class MockRetriever{
 	/**
 	 * Returns a dummy instance of a single project that houses everything: contributors, mentors, progression, contribution, thread and comments 
 	 */
-	buildSingleProject():Promise<Project>{
+	buildSingleProject():Project{
+
+		let project = new Project();
+		project.title = "Reactor Particles";
+		project.tldr = "Scientific project during HackBU";
+		project.description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
+		project.techStack = ["node", "angular", "express"];
+		for(let i:number = 0; i < 4; i++){
+			project.contributorList[i] = this.retrieveUser("Luis the " + i);
+		}
+		project.progression = this.retrieveProgression(project.contributorList);
+		for(let i:number = 0; i < 3; i++){
+			project.threads[i] = this.retrieveThread(`update number ${ i }451`,project.contributorList);
+		}
+		project.mentorList[0] = this.retrieveUser("Jake");
+		project.threads
+
+		return project; 
+
+	}
+
+	buildSingleProjectUsingRandomApi():Promise<Project>{
 
 		let project = new Project();
 		project.title = "Reactor Particles";
@@ -48,7 +69,7 @@ export class MockRetriever{
 	private retrieveProgression(users:any): Progression {
 		let progression = new Progression();
 		for(let i:number = 3; i < 6; i++){
-			progression.updates[i-3] = this.retrieveContribution(`${ i }789`, users[i]);
+			progression.updates[i-3] = this.retrieveContribution(`${ i }789`, users[i-3]);
 		}
 		return progression;
 	}
@@ -60,19 +81,25 @@ export class MockRetriever{
 		return comment;
 	}
 
-	private retrieveThread(sufix: string, users:any): Thread {
+	private retrieveThread(sufix: string, users:any[]): Thread {
 		let thread = new Thread();
 		thread.title = `Loop won't work during ${ sufix }`;
 		thread.description = "My for each loop stopped working after the last update number 3489";
-		thread.poster = users[11];
+		thread.poster = this.randomItem(users);
 		for(let i:number = 12; i < 15; i++){
-			let user = this.parseUser(users[i]);
-			thread.commentList[i-12] = this.retrieveComment(`number ${ i }829`, user);
+			// let user = this.parseUser(this.randomItem(users));
+			thread.commentList[i-12] = this.retrieveComment(`number ${ i }829`, this.randomItem(users));
 		}
 		return thread;
 	}
 
-	/*private retrieveUser(sufix: string): User {
+	private randomItem(list:any[]):any{
+	
+		let randomIndex=Math.floor((Math.random() * list.length) + 1);;
+		return list[randomIndex];
+	}
+
+	retrieveUser(sufix: string): User {
 		let user = new User();
 		user.firstName = `Jon ${ sufix }`;
 		user.lastName = "Brown";
@@ -84,9 +111,9 @@ export class MockRetriever{
 		user.email = "email@mail.com";
 		user.password = "pass1234";
 		return user;
-	}*/
+	}
 
-	private retrieveRandomUser(results:number):Promise<any> {
+	retrieveRandomUser(results:number):Promise<any> {
 
 		let options:any = {
 			uri: 'https://randomuser.me/api/',
