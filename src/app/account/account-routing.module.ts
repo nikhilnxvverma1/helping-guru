@@ -3,6 +3,8 @@ import { RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
 import { MyProjectsComponent } from './my-projects/my-projects.component';
+import { AllProjectsComponent } from './all-projects/all-projects.component';
+import { SearchResultComponent } from './search-result/search-result.component';
 import { ProjectHomeComponent } from './project/project-home/project-home.component';
 
 import { DescriptionComponent } from './project/description/description.component';
@@ -14,6 +16,8 @@ import { DiscussionComponent } from './project/discussion/discussion.component';
       { path:'home', component:HomeComponent, 
 		children:[
 			{ path:'my-projects', component:MyProjectsComponent},
+			{ path:'all-projects', component:AllProjectsComponent},
+			{ path:'search', component:SearchResultComponent},
 			{ path:'project', component:ProjectHomeComponent,
 			children:[
 				{ path: '', redirectTo: 'description', pathMatch:'full'},

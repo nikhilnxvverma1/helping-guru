@@ -11,6 +11,8 @@ import { AccountRoutingModule } from './account-routing.module';
 import { ProjectService } from '../helpers/project.service';
 import { ProjectItemComponent } from './project-item/project-item.component';
 import { ProjectModule } from './project/project.module';
+import { AllProjectsComponent } from './all-projects/all-projects.component';
+import { SearchResultComponent } from './search-result/search-result.component';
 
 @NgModule({
   imports: [
@@ -22,6 +24,6 @@ import { ProjectModule } from './project/project.module';
   ],
   schemas:[CUSTOM_ELEMENTS_SCHEMA],
   providers: [ProjectService],
-  declarations: [HeaderComponent, HomeComponent, MyProjectsComponent, ProjectItemComponent]
+  declarations: [HeaderComponent, HomeComponent, MyProjectsComponent, ProjectItemComponent, AllProjectsComponent, SearchResultComponent]
 })
 export class AccountModule { }
