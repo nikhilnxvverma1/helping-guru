@@ -5,6 +5,7 @@ import Promise=require('bluebird');
 
 const USER="User";
 const LOCATION="Location";
+const PROJECT="Project";
 
 export class SchemaBackend{
 
@@ -17,7 +18,7 @@ export class SchemaBackend{
 	 */
 	dropDatabaseSchema():Promise<any>{
 		winston.warn("DROPPING DB UNSAFELY!!!");
-		return this.db.query("DROP CLASS "+LOCATION+" IF EXISTS UNSAFE").
+		return this.db.query("DROP CLASS "+PROJECT+" IF EXISTS UNSAFE").
 		then((v:any)=>{
 			return this.db.query("DROP CLASS "+USER+" IF EXISTS UNSAFE")
 		});
@@ -28,7 +29,10 @@ export class SchemaBackend{
 	 * and if not, creates the required classes.
 	 */
 	ensureDatabaseSchema():Promise<ojs.Class>{
-		return this.ensureUser();
+		return this.ensureUser().
+		then((createdClass:ojs.Class)=>{
+			return this.ensureProject();
+		})
 		// return this.ensureLocation().
 		// then((createdClass:ojs.Class)=>{
 		// 	return this.ensureUser();
@@ -45,6 +49,20 @@ export class SchemaBackend{
 			{name:"thumbnailUrl",type:"String"},
 			{name:"dateOfBirth",type:"Date"}
 		],"V");//extends the generic 'Vertex' class
+	}
+
+	private ensureProject():Promise<ojs.Class>{
+		return this.createClassIfNotExists(PROJECT,[
+			{name:"title",type:"String"},
+			{name:"tldr",type:"String"},
+			{name:"description",type:"String"},
+			{name:"headerUrl",type:"String"},
+			{name:"mediumPhotoUrl",type:"String"},
+			{name:"techStack",type:"EmbeddedList", linkedType:"String"},
+			{name:"contributorList",type:"LinkList", linkedClass:"User"},
+			{name:"mentorList",type:"LinkList", linkedClass:"User"},
+			
+		]);
 	}
 
 	private ensureLocation():Promise<ojs.Class>{

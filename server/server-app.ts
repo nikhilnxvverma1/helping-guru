@@ -7,6 +7,7 @@ import winston = require('winston');
 import bodyParser = require('body-parser');
 import session = require('express-session');
 import { UserBackend,AuthenticationResult,statusCodeForLogin,statusCodeForSignup } from './user.backend';
+import { ProjectBackend } from './project.backend';
 import requestPromise=require('request-promise');
 import { MockRetriever } from './mock-retriever';
 
@@ -19,12 +20,13 @@ export class ServerApp {
 	private app: express.Application;
 	private db:orientjs.Db;
 	private userBackend:UserBackend;
-	
+	private projectBackend:ProjectBackend;
     
 	constructor(db?:orientjs.Db) {
 		this.app = express();
 		this.db=db;
 		this.userBackend=new UserBackend(this.db);
+		this.projectBackend=new ProjectBackend(this.db);
 	}
     
     public setRoutes() {        //the order matters here
@@ -219,6 +221,16 @@ export class ServerApp {
 
 			jsonHeader(res).send(JSON.stringify(user));
 		});
+
+		//create a new project
+		this.app.post('/api/create-project', (req:express.Request, res:express.Response) => {
+			winston.debug("Attempting to create new project");
+			this.projectBackend.checkAndCreateNewProject((<any>req).body).
+			then((attempt:number)=>{
+				//respond back with an appropriate status code
+				jsonHeader(res).send(JSON.stringify(attempt));
+			});
+		})
 
 
 	}

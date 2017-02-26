@@ -12,6 +12,7 @@ import { DiscussionComponent } from './discussion/discussion.component';
 import { ThreadComponent } from './thread/thread.component';
 import { CommentComponent } from './comment/comment.component';
 import { ContributionComponent } from './contribution/contribution.component';
+import { FullThreadComponent } from './full-thread/full-thread.component';
 
 @NgModule({
   imports: [
@@ -21,6 +22,6 @@ import { ContributionComponent } from './contribution/contribution.component';
 	// ProjectRoutingModule
   ],
 	schemas:[CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [ProjectHomeComponent, DescriptionComponent, ProgressionComponent, DiscussionComponent, ThreadComponent, CommentComponent, ContributionComponent]
+  declarations: [ProjectHomeComponent, DescriptionComponent, ProgressionComponent, DiscussionComponent, ThreadComponent, CommentComponent, ContributionComponent, FullThreadComponent]
 })
 export class ProjectModule { }

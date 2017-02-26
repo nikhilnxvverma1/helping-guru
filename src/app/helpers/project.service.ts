@@ -119,5 +119,11 @@ export class ProjectService {
 		return contribution;
 	}
 
+	createNewProject(project:Project):Observable<any>{
+		let headers = new Headers({ 'Content-Type': 'application/json' });
+		let options=new RequestOptions({headers:headers});
+		return this.http.post("/api/project/create-project",JSON.stringify(project),options).map((res:Response)=>{return res.json()});
+	}
+
 
 }

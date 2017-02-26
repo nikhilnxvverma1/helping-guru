@@ -21,6 +21,9 @@ import { DiscussionComponent } from './project/discussion/discussion.component';
 import { ThreadComponent } from './project/thread/thread.component';
 import { CommentComponent } from './project/comment/comment.component';
 import { ContributionComponent } from './project/contribution/contribution.component';
+import { FullThreadComponent } from './project/full-thread/full-thread.component';
+import { NewProjectComponent } from './new-project/new-project.component';
+
 
 @NgModule({
   imports: [
@@ -33,7 +36,7 @@ import { ContributionComponent } from './project/contribution/contribution.compo
   schemas:[CUSTOM_ELEMENTS_SCHEMA],
   providers: [AccountService,ProjectService],
   declarations: [HeaderComponent, HomeComponent, MyProjectsComponent, ProjectItemComponent, AllProjectsComponent, SearchResultComponent,
-  	ProjectHomeComponent, DescriptionComponent, ProgressionComponent, DiscussionComponent, ThreadComponent, CommentComponent, ContributionComponent
+  	ProjectHomeComponent, DescriptionComponent, ProgressionComponent, DiscussionComponent, ThreadComponent, CommentComponent, ContributionComponent,FullThreadComponent, NewProjectComponent
   ]
 })
 export class AccountModule { }

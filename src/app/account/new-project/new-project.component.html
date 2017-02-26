@@ -1,0 +1,9 @@
+<form (ngSubmit)="doLogin()" #loginForm="ngForm">
+	<input type="text" placeholder="email" name="email" [(ngModel)]="attempt.email" required>
+	<input type="password" placeholder="password" name="password" [(ngModel)]="attempt.password" required>
+	<button [disabled]="!loginForm.form.valid" type="button" (click)="doLogin()">Submit</button>
+</form>
+
+<ng-container *ngIf="errorMessage!=null">
+	<div>{{errorMessage}}</div>
+</ng-container>

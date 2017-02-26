@@ -10,11 +10,15 @@ import { ProjectHomeComponent } from './project/project-home/project-home.compon
 import { DescriptionComponent } from './project/description/description.component';
 import { ProgressionComponent } from './project/progression/progression.component';
 import { DiscussionComponent } from './project/discussion/discussion.component';
+import { FullThreadComponent } from './project/full-thread/full-thread.component';
+import { NewProjectComponent } from './new-project/new-project.component';
+
 @NgModule({
   imports: [
     RouterModule.forChild([
       { path:'home', component:HomeComponent, 
 		children:[
+			{ path:'new-project', component:NewProjectComponent},
 			{ path:'my-projects', component:MyProjectsComponent},
 			{ path:'all-projects', component:AllProjectsComponent},
 			{ path:'search', component:SearchResultComponent},
@@ -23,7 +27,8 @@ import { DiscussionComponent } from './project/discussion/discussion.component';
 				{ path: '', redirectTo: 'description', pathMatch:'full'},
 				{ path:'description', component:DescriptionComponent},
 				{ path:'discussion', component:DiscussionComponent},
-				{ path:'progression', component:ProgressionComponent}
+				{ path:'progression', component:ProgressionComponent},
+				{ path:'thread', component:FullThreadComponent}
 			]}
 	  ]}
     ])
