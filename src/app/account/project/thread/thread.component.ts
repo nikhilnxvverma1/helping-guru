@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Input,Output } from '@angular/core';
+import { Thread } from '../../../../models/thread';
 
 @Component({
   selector: 'app-thread',
@@ -7,9 +9,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ThreadComponent implements OnInit {
 
-  constructor() { }
+	@Input() thread:Thread;
+	
+	constructor() { }
 
-  ngOnInit() {
-  }
+	ngOnInit() {
+	}
 
 }

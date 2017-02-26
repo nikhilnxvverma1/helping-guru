@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Project } from '../../../../models/project';
+import { Thread } from '../../../../models/thread';
+import { Input,Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { ProjectService } from '../../../helpers/project.service';
+
 
 @Component({
   selector: 'app-discussion',
@@ -7,9 +13,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DiscussionComponent implements OnInit {
 
-  constructor() { }
+	threadList:Thread[];
 
-  ngOnInit() {
-  }
+	constructor(
+		private router:Router,
+		private projectService:ProjectService
+	) { }
+
+	ngOnInit() {
+		this.projectService.getDiscussion("#34:23").subscribe((threadList:Thread[])=>{
+			console.debug("received thread list of length  "+threadList.length);
+			this.threadList=threadList;
+		});
+	}
 
 }

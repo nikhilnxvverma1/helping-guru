@@ -4,6 +4,7 @@ import { Http,Headers,RequestOptions,Response } from '@angular/http';
 import 'rxjs/Rx';
 import { Project } from '../../models/project';
 import { User } from '../../models/user';
+import { Thread } from '../../models/thread';
 
 @Injectable()
 export class ProjectService {
@@ -69,6 +70,30 @@ export class ProjectService {
 		for(let i=0;i<json.length;i++){
 			project.mentorList.push(this.extractUserInfo(json[i]));
 		}
+	}
+
+	getDiscussion(projectId:string):Observable<Thread[]>{
+		console.debug("asking server for my threads of a project");
+		return this.http.get("/api/project/threads").map((response:Response)=>{return this.toThreadList(response)});
+	}
+
+	private toThreadList(response:Response):Thread[]{
+		let threadList:Thread[]=[];
+		let arrayBody=response.json();
+
+		for(let i=0;i<arrayBody.length;i++){
+			threadList[i]=this.extractBasicThreadInfo(arrayBody[i]);
+		}
+
+		return threadList;
+	}
+
+	private extractBasicThreadInfo(json:any):Thread{
+		let thread=new Thread();
+		thread.title=json.title;
+		thread.description=json.description;
+		thread.poster=this.extractUserInfo(json.poster);
+		return thread;
 	}
 
 
