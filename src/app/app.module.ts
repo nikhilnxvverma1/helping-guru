@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { UserService } from './helpers/user.service';
+import { AccountModule } from './account/account.module';
 
 import { AppComponent } from './app.component';
 import { SignupComponent } from './signup/signup.component';
@@ -20,7 +21,8 @@ import { LoginComponent } from './login/login.component';
     BrowserModule,
     FormsModule,
     HttpModule,
-	AppRoutingModule
+	AppRoutingModule,
+	AccountModule
   ],
   providers: [UserService],
   bootstrap: [AppComponent]

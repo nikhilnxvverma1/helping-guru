@@ -5,6 +5,7 @@ import path = require('path');
 import orientjs = require('orientjs');
 import winston = require('winston');
 import bodyParser = require('body-parser');
+import session = require('express-session');
 import { UserBackend,AuthenticationResult,statusCodeForLogin,statusCodeForSignup } from './user.backend';
 
 export class ServerApp {
@@ -26,6 +27,9 @@ export class ServerApp {
 		this.app.use(bodyParser.urlencoded({
 			extended:false
 		}));
+		//TODO WARNING: the secret should not be stored in code.(Dev purposes only)
+		this.app.use(session({secret:"sdf923jk23asf01gasds42",saveUninitialized:true,resave:false}));
+
 		this.configureAPIRoutes();
 		
 		//static resources (is amongst the main folders in the root of the project)
