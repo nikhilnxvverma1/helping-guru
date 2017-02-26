@@ -1,6 +1,7 @@
 import { Project } from './project';
 
 export class User{
+	rid:string;
 	firstName:string;
 	lastName:string;
 	email:string;

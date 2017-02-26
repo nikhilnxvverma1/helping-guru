@@ -225,7 +225,7 @@ export class ServerApp {
 		//create a new project
 		this.app.post('/api/create-project', (req:express.Request, res:express.Response) => {
 			winston.debug("Attempting to create new project");
-			this.projectBackend.checkAndCreateNewProject((<any>req).body).
+			this.projectBackend.checkAndCreateNewProject((<any>req).body,(<any>req).session.user).
 			then((attempt:number)=>{
 				//respond back with an appropriate status code
 				jsonHeader(res).send(JSON.stringify(attempt));
