@@ -1,3 +1,3 @@
-<p>
-  progression works!
-</p>
+<ng-container *ngIf="progression!=null">
+	<app-contribution *ngFor="let contribution of progression.updates" [contribution]="contribution"></app-contribution>
+</ng-container>

@@ -5,6 +5,8 @@ import 'rxjs/Rx';
 import { Project } from '../../models/project';
 import { User } from '../../models/user';
 import { Thread } from '../../models/thread';
+import { Progression } from '../../models/progression';
+import { Contribution } from '../../models/contribution';
 
 @Injectable()
 export class ProjectService {
@@ -94,6 +96,27 @@ export class ProjectService {
 		thread.description=json.description;
 		thread.poster=this.extractUserInfo(json.poster);
 		return thread;
+	}
+
+	getProgression(projectId:string):Observable<Progression>{
+		console.debug("asking server for a project's contribution");
+		return this.http.get("/api/project/progression").map((response:Response)=>{return this.toProgression(response)});
+	}
+
+	private toProgression(response:Response):Progression{
+		let progression:Progression=new Progression();
+		let body=response.json();
+		for(let i=0;i<body.updates.length;i++){
+			progression.updates.push(this.extractContribution(body.updates[i]));
+		}
+		return progression;
+	}
+
+	private extractContribution(json:any):Contribution{
+		let contribution=new Contribution();
+		contribution.message=json.message;
+		contribution.user=this.extractUserInfo(json.user);
+		return contribution;
 	}
 
 

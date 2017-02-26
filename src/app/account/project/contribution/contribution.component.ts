@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Input,Output } from '@angular/core';
+import { Contribution } from '../../../../models/contribution';
 
 @Component({
   selector: 'app-contribution',
@@ -7,9 +9,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContributionComponent implements OnInit {
 
-  constructor() { }
+	@Input() contribution:Contribution;
+	
+	constructor() { }
 
-  ngOnInit() {
-  }
+	ngOnInit() {
+	}
 
 }

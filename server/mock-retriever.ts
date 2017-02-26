@@ -17,7 +17,7 @@ export class MockRetriever{
 	buildSingleProject():Project{
 
 		let project = new Project();
-		let randomIndex=Math.floor((Math.random() * mock_data.length) + 1);
+		let randomIndex=Math.floor((Math.random() * mock_data.length));
 		project.title = mock_data[randomIndex].title;
 		project.tldr = "Scientific project during HackBU";
 		project.description = mock_data[randomIndex].description;
@@ -41,7 +41,7 @@ export class MockRetriever{
 	buildSingleProjectUsingRandomApi():Promise<Project>{
 
 		let project = new Project();
-		let randomIndex=Math.floor((Math.random() * mock_data.length) + 1);
+		let randomIndex=Math.floor((Math.random() * mock_data.length));
 		project.title = mock_data[randomIndex].title;
 		project.tldr = "Scientific project during HackBU";
 		project.description = mock_data[randomIndex].description;
