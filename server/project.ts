@@ -13,4 +13,5 @@ export class Project{
 	mentorList:User[]=[];
 	progression:Progression;
 	techStack:string[]=[];
+	threads:Thread[]=[];
 }

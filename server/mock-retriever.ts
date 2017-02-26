@@ -62,18 +62,18 @@ export class MockRetriever{
 		thread.description = "My for each loop stopped working after the last update number 3489";
 		thread.poster = this.retrieveUser("Gordon");
 		for(let i:number = 0; i < 6; i++){
-			thread.comments[i] = this.retrieveComment(`number ${ i }829`);
+			thread.commentList[i] = this.retrieveComment(`number ${ i }829`);
 		}
 		return thread;
 	}
 
 	private retrieveUser(sufix: string): User {
 		let user = new User();
-		user.firstname = `Jon ${ sufix }`;
-		user.lastname = "Brown";
+		user.firstName = `Jon ${ sufix }`;
+		user.lastName = "Brown";
 		user.fullPhotoUrl = "https://cdn1.iconfinder.com/data/icons/freeline/32/account_friend_human_man_member_person_profile_user_users-256.png";
 		user.mediumPhotoUrl = "https://cdn1.iconfinder.com/data/icons/freeline/32/account_friend_human_man_member_person_profile_user_users-256.png";
-		user.thumbnail = "https://cdn1.iconfinder.com/data/icons/freeline/32/account_friend_human_man_member_person_profile_user_users-256.png";
+		user.thumbnailUrl = "https://cdn1.iconfinder.com/data/icons/freeline/32/account_friend_human_man_member_person_profile_user_users-256.png";
 		user.points = 5.2;
 		user.gender = "Female";
 		user.email = "email@mail.com";
@@ -95,11 +95,11 @@ export class MockRetriever{
 		return request(options).then(function(results: any){
 			let user = new User();
 
-			user.firstname = results[0].name.first;
-			user.lastname = results[0].name.last;
+			user.firstName = results[0].name.first;
+			user.lastName = results[0].name.last;
 			user.fullPhotoUrl = results[0].picture.large;
 			user.mediumPhotoUrl = results[0].picture.medium;
-			user.thumbnail = results[0].picture.thumbnail;
+			user.thumbnailUrl = results[0].picture.thumbnail;
 			user.points = 5.2;
 			user.gender = results[0].gender;
 			user.email = results[0].email;

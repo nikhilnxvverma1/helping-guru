@@ -1,8 +1,9 @@
 import { User } from './user';
+import { Comment } from './comment';
 
 export class Thread{
 	title:string;
 	description:string;
 	poster:User;
-	comments:Comment[]=[];
+	commentList:Comment[]=[];
 }
