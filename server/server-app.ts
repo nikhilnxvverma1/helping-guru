@@ -10,6 +10,10 @@ import { UserBackend,AuthenticationResult,statusCodeForLogin,statusCodeForSignup
 import requestPromise=require('request-promise');
 import { MockRetriever } from './mock-retriever';
 
+//TODO remove these modal dependencies from the server
+import { Project } from './project';
+import { User } from './user';
+
 export class ServerApp {
     
 	private app: express.Application;
@@ -128,6 +132,90 @@ export class ServerApp {
 		
 			jsonHeader(res).send(JSON.stringify(project.progression));
 		});
+
+		//get all the projects 
+		this.app.get('/api/all-projects', (req:express.Request, res:express.Response) => {
+			winston.debug("Retrieving all the projects");
+
+			//Dummy testing
+			let allProjects:Project[]=[];
+			for(let i=0;i<40;i++){
+				let project=new MockRetriever().buildSingleProject();
+				//purposely nullifying for testing purposes
+				project.progression=null;
+				project.threads=null;
+				allProjects.push(project);
+			}
+
+			jsonHeader(res).send(JSON.stringify(allProjects));
+		});
+
+		//get only the project for the user in session
+		this.app.get('/api/my-projects', (req:express.Request, res:express.Response) => {
+			winston.debug("Retrieving only logged in users' projects");
+
+			//Dummy testing
+			let allProjects:Project[]=[];
+			for(let i=0;i<40;i++){
+				let project=new MockRetriever().buildSingleProject();
+				//purposely nullifying for testing purposes
+				project.progression=null;
+				project.threads=null;
+				allProjects.push(project);
+			}
+
+			jsonHeader(res).send(JSON.stringify(allProjects));
+		});
+
+		//get projects for a search term
+		this.app.get('/api/search-projects', (req:express.Request, res:express.Response) => {
+			winston.debug("Retrieving projects for a selected search term");
+
+			//Dummy testing
+			let allProjects:Project[]=[];
+			for(let i=0;i<40;i++){
+				let project=new MockRetriever().buildSingleProject();
+				//purposely nullifying for testing purposes
+				project.progression=null;
+				project.threads=null;
+				allProjects.push(project);
+			}
+
+			jsonHeader(res).send(JSON.stringify(allProjects));
+		});
+
+		//get hints for a search term
+		this.app.get('/api/search-term', (req:express.Request, res:express.Response) => {
+			winston.debug("Retrieving hints for a search term");
+
+			//Dummy testing
+			let allProjects:Project[]=[];
+			for(let i=0;i<40;i++){
+				let project=new MockRetriever().buildSingleProject();
+				//purposely nullifying for testing purposes
+				project.progression=null;
+				project.threads=null;
+				allProjects.push(project);
+			}
+
+			jsonHeader(res).send(JSON.stringify(allProjects));//only title and description along with RID
+		});
+
+		//get data for a particular user
+		this.app.get('/api/user', (req:express.Request, res:express.Response) => {
+			winston.debug("Retrieving details for a user");
+
+			//Dummy testing
+			let user=new User();
+			user.firstName="Nikhil";
+			user.lastName="Verma";
+			user.email="asdf@mail.com";
+			user.points=120;
+			user.thumbnailUrl="https://randomuser.me/api/portraits/men/0.jpg";
+
+			jsonHeader(res).send(JSON.stringify(user));
+		});
+
 
 	}
 
