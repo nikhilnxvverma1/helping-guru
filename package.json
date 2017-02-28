@@ -1,7 +1,6 @@
 {
-  "name": "sanity",
-  "version": "0.0.0",
-  "license": "MIT",
+  "name": "helping-guru",
+  "version": "0.0.1",
   "angular-cli": {},
   "scripts": {
     "ng": "ng",
