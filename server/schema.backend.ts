@@ -67,6 +67,9 @@ export class SchemaBackend{
 		}).
 		then((c:ojs.Class)=>{
 			return this.ensureProjectLinksToProgression();
+		}).
+		then((c:ojs.Class)=>{
+			return this.ensureProjectLinksToThread();
 		})
 	}
 
@@ -151,6 +154,17 @@ export class SchemaBackend{
 		then((c:ojs.Class)=>{
 			winston.info("Creating a link between project and progression");
 			return c.property.create({name:"progression", type:"Link", linkedClass:PROGRESSION}).
+			then((p:ojs.Property)=>{
+				return c;
+			})
+		})
+	}
+
+	private ensureProjectLinksToThread():Promise<ojs.Class>{
+		return this.db.class.get(PROJECT).
+		then((c:ojs.Class)=>{
+			winston.info("Creating a link between project and thread(as a list)");
+			return c.property.create({name:"threadList", type:"LinkList", linkedClass:THREAD}).
 			then((p:ojs.Property)=>{
 				return c;
 			})
