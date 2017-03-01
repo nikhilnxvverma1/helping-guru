@@ -250,7 +250,8 @@ export class ServerApp {
 			if(!loggedInUser){
 				res.status(401).send("user not found");
 			}else{
-				this.projectBackend.checkAndCreateNewProject((<any>req).body,(<any>req).session.user).
+				let data=(<any>req).body;
+				this.projectBackend.createThreadByPoster(data,(<any>req).session.user['@rid'],data["projectId"]).
 				then((attempt:number)=>{
 					//respond back with an appropriate status code
 					jsonHeader(res).send(JSON.stringify(attempt));

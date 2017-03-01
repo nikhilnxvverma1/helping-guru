@@ -51,8 +51,26 @@ export class ProjectBackend{
 	}
 
 	/** Insert a new thread under the given project by the current user*/
-	createThreadByPoster(projectRid:string,userRid:string):Promise<number>{
-		
-		return this.db.query("Insert into ")
+	createThreadByPoster(thread:any,userId:string,projectId:string):Promise<any>{
+		return this.db.query("create vertex Thread set title=:title, description=:description, timestamp=sysdate(), poster="+userId,{
+			params:{
+				title:thread.title,
+				description:thread.description
+			}
+		}).
+		then((resultSet:any)=>{
+			return this.addThreadToProject(resultSet[0],projectId);
+		})
+	}
+
+	private addThreadToProject(thread:any,projectId:string):Promise<any>{
+		return this.db.query("update "+projectId+" add threadList = "+thread["@rid"])
+		.then((r:any)=>{
+			winston.info('Added thread to project:', thread["@rid"]);
+			return thread;
+		}).catch((err:Error)=>{
+			winston.error(err.message);
+			return 1;
+		});
 	}
 }
