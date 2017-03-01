@@ -7,6 +7,8 @@ const USER="User";
 const PROJECT="Project";
 const THREAD="Thread";
 const COMMENT="Comment";
+const PROGRESSION="Progression";
+const CONTRIBUTION="Contribution";
 
 export class SchemaBackend{
 
@@ -26,6 +28,12 @@ export class SchemaBackend{
 		}).
 		then((v:any)=>{
 			return this.db.query("DROP CLASS "+THREAD+" IF EXISTS UNSAFE");
+		}).
+		then((v:any)=>{
+			return this.db.query("DROP CLASS "+PROGRESSION+" IF EXISTS UNSAFE");
+		}).
+		then((v:any)=>{
+			return this.db.query("DROP CLASS "+CONTRIBUTION+" IF EXISTS UNSAFE");
 		}).
 		then((v:any)=>{
 			return this.db.query("DROP CLASS "+USER+" IF EXISTS UNSAFE")
@@ -50,6 +58,15 @@ export class SchemaBackend{
 		}).
 		then((c:ojs.Class)=>{
 			return this.ensureThread();
+		}).
+		then((c:ojs.Class)=>{
+			return this.ensureContribution();
+		}).
+		then((c:ojs.Class)=>{
+			return this.ensureProgression();
+		}).
+		then((c:ojs.Class)=>{
+			return this.ensureProjectLinksToProgression();
 		})
 	}
 
@@ -80,14 +97,16 @@ export class SchemaBackend{
 	}
 
 	private ensureUserHasReferencesToProject():Promise<ojs.Class>{
-		return this.db.class.get('User').
+		return this.db.class.get(USER).
 		then((c:ojs.Class)=>{
+			winston.info("Adding projects contributed attribute to User class");
 			return c.property.create({name:"projectsContributed", type:"LinkList", linkedClass:PROJECT}).
 			then((p:ojs.Property)=>{
 				return c;
 			})
 		}).
 		then((c:ojs.Class)=>{
+			winston.info("Adding projects mentored attribute to User class");
 			return c.property.create({name:"projectsMentored", type:"LinkList", linkedClass:PROJECT}).
 			then((p:ojs.Property)=>{
 				return c;
@@ -111,6 +130,31 @@ export class SchemaBackend{
 			{name:"poster",type:"Link",linkedClass:USER},
 			{name:"commentList",type:"LinkList",linkedClass:COMMENT},
 		],VERTEX_SUPER_CLASS);
+	}
+
+	private ensureProgression():Promise<ojs.Class>{
+		return this.createClassIfNotExists(PROGRESSION,[
+			{name:"updates",type:"LinkList",linkedClass:CONTRIBUTION},
+		],VERTEX_SUPER_CLASS);
+	}
+
+	private ensureContribution():Promise<ojs.Class>{
+		return this.createClassIfNotExists(CONTRIBUTION,[
+			{name:"message",type:"String"},
+			{name:"timestamp",type:"Date"},
+			{name:"user",type:"LinkList",linkedClass:USER},
+		],VERTEX_SUPER_CLASS);
+	}
+
+	private ensureProjectLinksToProgression():Promise<ojs.Class>{
+		return this.db.class.get(PROJECT).
+		then((c:ojs.Class)=>{
+			winston.info("Creating a link between project and progression");
+			return c.property.create({name:"progression", type:"Link", linkedClass:PROGRESSION}).
+			then((p:ojs.Property)=>{
+				return c;
+			})
+		})
 	}
 
 	/**

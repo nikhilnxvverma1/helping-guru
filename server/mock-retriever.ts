@@ -68,7 +68,7 @@ export class MockRetriever{
 		let contribution = new Contribution();
 		contribution.message = `I added authentication on file ${ addition }`;
 		contribution.user = user;
-		contribution.date = new Date();
+		contribution.timestamp = new Date();
 		return contribution;
 	}
 
