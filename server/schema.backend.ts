@@ -2,10 +2,11 @@ import ojs= require('orientjs');
 import winston=require('winston');
 import Promise=require('bluebird');
 
-
+const VERTEX_SUPER_CLASS="V"
 const USER="User";
-const LOCATION="Location";
 const PROJECT="Project";
+const THREAD="Thread";
+const COMMENT="Comment";
 
 export class SchemaBackend{
 
@@ -18,10 +19,18 @@ export class SchemaBackend{
 	 */
 	dropDatabaseSchema():Promise<any>{
 		winston.warn("DROPPING DB UNSAFELY!!!");
+
 		return this.db.query("DROP CLASS "+PROJECT+" IF EXISTS UNSAFE").
 		then((v:any)=>{
+			return this.db.query("DROP CLASS "+COMMENT+" IF EXISTS UNSAFE");
+		}).
+		then((v:any)=>{
+			return this.db.query("DROP CLASS "+THREAD+" IF EXISTS UNSAFE");
+		}).
+		then((v:any)=>{
 			return this.db.query("DROP CLASS "+USER+" IF EXISTS UNSAFE")
-		});
+		})
+		
 	}
 
 	/**
@@ -35,11 +44,13 @@ export class SchemaBackend{
 		}).
 		then((c:ojs.Class)=>{
 			return this.ensureUserHasReferencesToProject();
-		});
-		// return this.ensureLocation().
-		// then((createdClass:ojs.Class)=>{
-		// 	return this.ensureUser();
-		// });
+		}).
+		then((c:ojs.Class)=>{
+			return this.ensureComment();
+		}).
+		then((c:ojs.Class)=>{
+			return this.ensureThread();
+		})
 	}
 
 	private ensureUser():Promise<ojs.Class>{
@@ -51,7 +62,7 @@ export class SchemaBackend{
 			{name:"gender",type:"String"},
 			{name:"thumbnailUrl",type:"String"},
 			{name:"dateOfBirth",type:"Date"}
-		],"V");//extends the generic 'Vertex' class
+		],VERTEX_SUPER_CLASS);//extends the generic 'Vertex' class
 	}
 
 	private ensureProject():Promise<ojs.Class>{
@@ -65,7 +76,7 @@ export class SchemaBackend{
 			{name:"contributorList",type:"LinkList", linkedClass:"User"},
 			{name:"mentorList",type:"LinkList", linkedClass:USER},
 			
-		]);
+		],VERTEX_SUPER_CLASS);
 	}
 
 	private ensureUserHasReferencesToProject():Promise<ojs.Class>{
@@ -84,14 +95,22 @@ export class SchemaBackend{
 		});
 	}
 
-	private ensureLocation():Promise<ojs.Class>{
-		return this.createClassIfNotExists(LOCATION,[
-			{name:"streetAddress",type:"String"},
-			{name:"city",type:"String"},
-			{name:"state",type:"String"},
-			{name:"country",type:"String"},
-			{name:"zipcode",type:"String"}
-		]);
+	private ensureComment():Promise<ojs.Class>{
+		return this.createClassIfNotExists(COMMENT,[
+			{name:"message",type:"String"},
+			{name:"timestamp",type:"Date"},
+			{name:"poster",type:"Link",linkedClass:USER},
+		],VERTEX_SUPER_CLASS);
+	}
+
+	private ensureThread():Promise<ojs.Class>{
+		return this.createClassIfNotExists(THREAD,[
+			{name:"title",type:"String"},
+			{name:"description",type:"String"},
+			{name:"timestamp",type:"Date"},
+			{name:"poster",type:"Link",linkedClass:USER},
+			{name:"commentList",type:"LinkList",linkedClass:COMMENT},
+		],VERTEX_SUPER_CLASS);
 	}
 
 	/**

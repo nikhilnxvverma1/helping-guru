@@ -49,4 +49,10 @@ export class ProjectBackend{
 			return false;
 		});
 	}
+
+	/** Insert a new thread under the given project by the current user*/
+	createThreadByPoster(projectRid:string,userRid:string):Promise<number>{
+		
+		return this.db.query("Insert into ")
+	}
 }
