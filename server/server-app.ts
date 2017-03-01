@@ -231,11 +231,31 @@ export class ServerApp {
 		//create a new project
 		this.app.post('/api/create-project', (req:express.Request, res:express.Response) => {
 			winston.debug("Attempting to create new project");
-			this.projectBackend.checkAndCreateNewProject((<any>req).body,(<any>req).session.user).
-			then((attempt:number)=>{
-				//respond back with an appropriate status code
-				jsonHeader(res).send(JSON.stringify(attempt));
-			});
+			let loggedInUser=(<any>req).session.user;
+			if(!loggedInUser){
+				res.status(401).send("user not found");
+			}else{
+				this.projectBackend.checkAndCreateNewProject((<any>req).body,(<any>req).session.user).
+				then((attempt:number)=>{
+					//respond back with an appropriate status code
+					jsonHeader(res).send(JSON.stringify(attempt));
+				});
+			}
+		})
+
+		//create a new thread
+		this.app.post('/api/create-thread', (req:express.Request, res:express.Response) => {
+			winston.debug("Attempting to create new thread under a project");
+			let loggedInUser=(<any>req).session.user;
+			if(!loggedInUser){
+				res.status(401).send("user not found");
+			}else{
+				this.projectBackend.checkAndCreateNewProject((<any>req).body,(<any>req).session.user).
+				then((attempt:number)=>{
+					//respond back with an appropriate status code
+					jsonHeader(res).send(JSON.stringify(attempt));
+				});
+			}
 		})
 
 

@@ -102,18 +102,32 @@ export class SchemaBackend{
 	private ensureUserHasReferencesToProject():Promise<ojs.Class>{
 		return this.db.class.get(USER).
 		then((c:ojs.Class)=>{
-			winston.info("Adding projects contributed attribute to User class");
-			return c.property.create({name:"projectsContributed", type:"LinkList", linkedClass:PROJECT}).
-			then((p:ojs.Property)=>{
-				return c;
+			return c.property.get("projectsContributed").
+			then((projectsContributedProperty:ojs.Property)=>{
+				if(projectsContributedProperty==null){
+					winston.info("Adding projects contributed attribute to User class");
+					return c.property.create({name:"projectsContributed", type:"LinkList", linkedClass:PROJECT}).
+					then((p:ojs.Property)=>{
+						return c;
+					})
+				}else{
+					return c;
+				}
 			})
 		}).
 		then((c:ojs.Class)=>{
-			winston.info("Adding projects mentored attribute to User class");
-			return c.property.create({name:"projectsMentored", type:"LinkList", linkedClass:PROJECT}).
-			then((p:ojs.Property)=>{
-				return c;
-			})
+			return c.property.get("projectsMentored").
+			then((projectsMentored:ojs.Property)=>{
+				if(projectsMentored==null){
+					winston.info("Adding projects mentored attribute to User class");
+					return c.property.create({name:"projectsMentored", type:"LinkList", linkedClass:PROJECT}).
+					then((p:ojs.Property)=>{
+						return c;
+					})
+				}else{
+					return c;
+				}
+			});
 		});
 	}
 
@@ -152,22 +166,37 @@ export class SchemaBackend{
 	private ensureProjectLinksToProgression():Promise<ojs.Class>{
 		return this.db.class.get(PROJECT).
 		then((c:ojs.Class)=>{
-			winston.info("Creating a link between project and progression");
-			return c.property.create({name:"progression", type:"Link", linkedClass:PROGRESSION}).
-			then((p:ojs.Property)=>{
-				return c;
+			return c.property.get("progression").
+			then((progresssion:ojs.Property)=>{
+				if(progresssion==null){
+					winston.info("Creating a link between project and progression");
+					return c.property.create({name:"progression", type:"Link", linkedClass:PROGRESSION}).
+					then((p:ojs.Property)=>{
+						return c;
+					})
+				}else{
+					return c;
+				}
 			})
+
 		})
 	}
 
 	private ensureProjectLinksToThread():Promise<ojs.Class>{
 		return this.db.class.get(PROJECT).
 		then((c:ojs.Class)=>{
-			winston.info("Creating a link between project and thread(as a list)");
-			return c.property.create({name:"threadList", type:"LinkList", linkedClass:THREAD}).
-			then((p:ojs.Property)=>{
-				return c;
-			})
+			return c.property.get("threadList").
+			then((threadList:ojs.Property)=>{
+				if(threadList==null){
+					winston.info("Creating a link between project and thread(as a list)");
+					return c.property.create({name:"threadList", type:"LinkList", linkedClass:THREAD}).
+					then((p:ojs.Property)=>{
+						return c;
+					})
+				}else{
+					return c;
+				}
+			});
 		})
 	}
 
