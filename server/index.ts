@@ -18,7 +18,7 @@ if(iWantToUseADatabase){//configure and setup OrientDB database before launching
 	//change or add more properties as needed
 
 	connectToDatabase(databaseOptions).
-	//uncomment this part if you want to destroy and recreate the entire database schema from scratch
+	// uncomment this part if you want to destroy and recreate the entire database schema from scratch
 	// then((db:ojs.Db)=>{
 	// 	winston.info("Databse connection established, destroying schema setup");
 	// 	return new SchemaBackend(db).dropDatabaseSchema().then((v:any)=>{

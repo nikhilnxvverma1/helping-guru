@@ -96,6 +96,12 @@ export class ServerApp {
 			});
 		});
 
+		this.app.get('/api/logout', (req:express.Request, res:express.Response) => {
+			winston.debug("Clearing user out of session: logout user");
+			(<any>req).session.user=null;
+			res.send(JSON.stringify(0));
+		});
+
 		//get a single project
 		this.app.get('/api/project', (req:express.Request, res:express.Response) => {
 			winston.debug("Retrieving a single project");
@@ -262,6 +268,11 @@ export class ServerApp {
 export function jsonHeader(response:express.Response):express.Response{
 	response.setHeader('Content-Type', 'application/json');
 	return response;
+}
+
+export function loggedIn(req:express.Request):boolean{
+
+	return true;//TODO use this before every request
 }
 
 const production=process.env.NODE_ENV=='production';
