@@ -259,6 +259,22 @@ export class ServerApp {
 			}
 		})
 
+		//create a new post comment
+		this.app.post('/api/create-comment', (req:express.Request, res:express.Response) => {
+			winston.debug("Attempting to create new thread under a project");
+			let loggedInUser=(<any>req).session.user;
+			if(!loggedInUser){
+				res.status(401).send("user not found");
+			}else{
+				let data=(<any>req).body;
+				this.projectBackend.createCommentByPoster(data,data["threadId"],(<any>req).session.user['@rid']).
+				then((attempt:number)=>{
+					//respond back with an appropriate status code
+					jsonHeader(res).send(JSON.stringify(attempt));
+				});
+			}
+		})
+
 
 	}
 

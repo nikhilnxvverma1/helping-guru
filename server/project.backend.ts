@@ -73,4 +73,17 @@ export class ProjectBackend{
 			return 1;
 		});
 	}
+
+	createCommentByPoster(comment:any,threadId:string,userId:string):Promise<any>{
+		return this.db.query("Create Vertex Comment Set message=:message, timestamp=sysdate(), poster="+userId,{
+			params:{
+				message:comment.message
+			}
+		}).then((resultSet:any)=>{
+			return this.db.query("Update "+threadId+" add commentList = "+resultSet[0]["@rid"]).
+			then((v:any)=>{
+				return resultSet[0];
+			})
+		})
+	}
 }
