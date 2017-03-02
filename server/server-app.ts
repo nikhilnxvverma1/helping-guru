@@ -236,9 +236,9 @@ export class ServerApp {
 				res.status(401).send("user not found");
 			}else{
 				this.projectBackend.checkAndCreateNewProject((<any>req).body,(<any>req).session.user).
-				then((attempt:number)=>{
+				then((attempt:any)=>{
 					//respond back with an appropriate status code
-					jsonHeader(res).send(JSON.stringify(attempt));
+					jsonHeader(res).status(attempt.code).send(JSON.stringify(attempt.response));
 				});
 			}
 		})
@@ -251,10 +251,10 @@ export class ServerApp {
 				res.status(401).send("user not found");
 			}else{
 				let data=(<any>req).body;
-				this.projectBackend.createThreadByPoster(data,(<any>req).session.user['@rid'],data["projectId"]).
-				then((attempt:number)=>{
+				this.projectBackend.createThreadByPoster(data,(<any>req).session.user['@rid'],data["projectID"]).
+				then((attempt:any)=>{
 					//respond back with an appropriate status code
-					jsonHeader(res).send(JSON.stringify(attempt));
+					jsonHeader(res).status(attempt.code).send(JSON.stringify(attempt.response));
 				});
 			}
 		})
@@ -267,7 +267,7 @@ export class ServerApp {
 				res.status(401).send("user not found");
 			}else{
 				let data=(<any>req).body;
-				this.projectBackend.createCommentByPoster(data,data["threadId"],(<any>req).session.user['@rid']).
+				this.projectBackend.createCommentByPoster(data,data["threadID"],(<any>req).session.user['@rid']).
 				then((attempt:number)=>{
 					//respond back with an appropriate status code
 					jsonHeader(res).send(JSON.stringify(attempt));

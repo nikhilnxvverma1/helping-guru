@@ -93,7 +93,8 @@ export class SchemaBackend{
 			{name:"headerUrl",type:"String"},
 			{name:"mediumPhotoUrl",type:"String"},
 			{name:"techStack",type:"EmbeddedList", linkedType:"String"},
-			{name:"contributorList",type:"LinkList", linkedClass:"User"},
+			{name:"createdBy",type:"Link", linkedClass:USER},
+			{name:"contributorList",type:"LinkList", linkedClass:USER},
 			{name:"mentorList",type:"LinkList", linkedClass:USER},
 			
 		],VERTEX_SUPER_CLASS);
