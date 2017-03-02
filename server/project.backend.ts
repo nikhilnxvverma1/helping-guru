@@ -61,10 +61,13 @@ export class ProjectBackend{
 
 	/** Adds the user to the contributorList of a project */
 	setUserAsContributor(userID:string,projectID:string):Promise<any>{
-		return this.db.query("update "+projectID+" add contributorList = "+userID+" return after @this")
-		.then((r:any)=>{
-			winston.debug('user added as contributor to project:', r);
-			return {code:200,response:{status:0,message:"Success",project:r[0]}};
+		return this.db.query("update "+projectID+" add contributorList = "+userID+" return after @this").
+		then((rp:any)=>{
+			return this.db.query("update "+userID+" add projectsContributed = "+projectID+" return after @this").
+			then((ru:any[])=>{
+				winston.debug('user added as contributor to project:', rp[0]);
+				return {code:200,response:{status:0,message:"Success",project:rp[0]}};
+			});
 		}).catch((err:Error)=>{
 			winston.error(err.message);
 			return {code:500,response:{status:1,message:err.message}};
@@ -73,9 +76,43 @@ export class ProjectBackend{
 
 	/** Adds the user to the mentorList of a project */
 	setUserAsMentor(userID:string,projectID:string):Promise<any>{
-		return this.db.query("update "+projectID+" add mentorList = "+userID+" return after @this")
-		.then((r:any)=>{
-			return {code:200,response:{status:0,message:"Success",project:r[0]}};
+		return this.db.query("update "+projectID+" add mentorList = "+userID+" return after @this").
+		then((rp:any)=>{
+			return this.db.query("update "+userID+" add projectsMentored = "+projectID+" return after @this").
+			then((ru:any[])=>{
+				winston.debug('user added as mentor to project:', rp[0]);
+				return {code:200,response:{status:0,message:"Success",project:rp[0]}};
+			});
+		}).catch((err:Error)=>{
+			winston.error(err.message);
+			return {code:500,response:{status:1,message:err.message}};
+		});
+	}
+
+	/** Removes the user from the contributorList of a project */
+	removeUserAsContributor(userID:string,projectID:string):Promise<any>{
+		return this.db.query("update "+projectID+" remove contributorList = "+userID+" return after @this").
+		then((rp:any)=>{
+			return this.db.query("update "+userID+" remove projectsContributed = "+projectID+" return after @this").
+			then((ru:any[])=>{
+				winston.debug('user removed as contributor from project:', rp[0]);
+				return {code:200,response:{status:0,message:"Success",project:rp[0]}};
+			});
+		}).catch((err:Error)=>{
+			winston.error(err.message);
+			return {code:500,response:{status:1,message:err.message}};
+		});
+	}
+
+	/** Removes the user from the mentorList of a project */
+	removeUserAsMentor(userID:string,projectID:string):Promise<any>{
+		return this.db.query("update "+projectID+" remove mentorList = "+userID+" return after @this").
+		then((rp:any)=>{
+			return this.db.query("update "+userID+" remove projectsMentored = "+projectID+" return after @this").
+			then((ru:any[])=>{
+				winston.debug('user removed as mentor from project:', rp[0]);
+				return {code:200,response:{status:0,message:"Success",project:rp[0]}};
+			});
 		}).catch((err:Error)=>{
 			winston.error(err.message);
 			return {code:500,response:{status:1,message:err.message}};

@@ -291,7 +291,37 @@ export class ServerApp {
 			}
 		})
 
+		//join as mentor
+		this.app.put('/api/project/join-mentor', (req:express.Request, res:express.Response) => {
+			winston.debug("Attempting to put user as mentor of the project");
+			let loggedInUser=(<any>req).session.user;
+			if(!loggedInUser){
+				res.status(401).send("user not found");
+			}else{
+				let data=(<any>req).body;
+				this.projectBackend.setUserAsMentor((<any>req).session.user['@rid'],data["projectID"]).
+				then((attempt:any)=>{
+					//respond back with an appropriate status code
+					jsonHeader(res).status(attempt.code).send(JSON.stringify(attempt.response));
+				});
+			}
+		})
 
+		//remove as mentor
+		this.app.put('/api/project/remove-mentor', (req:express.Request, res:express.Response) => {
+			winston.debug("Attempting to put user as mentor of the project");
+			let loggedInUser=(<any>req).session.user;
+			if(!loggedInUser){
+				res.status(401).send("user not found");
+			}else{
+				let data=(<any>req).body;
+				this.projectBackend.removeUserAsMentor((<any>req).session.user['@rid'],data["projectID"]).
+				then((attempt:any)=>{
+					//respond back with an appropriate status code
+					jsonHeader(res).status(attempt.code).send(JSON.stringify(attempt.response));
+				});
+			}
+		})
 	}
 
     public start() {//this method is called after setRoutes()
