@@ -60,8 +60,8 @@ export class ProjectBackend{
 	}
 
 	/** Adds the user to the contributorList of a project */
-	setUserAsContributor(userId:string,projectId:string):Promise<any>{
-		return this.db.query("update "+projectId+" add contributorList = "+userId+" return after @this")
+	setUserAsContributor(userID:string,projectID:string):Promise<any>{
+		return this.db.query("update "+projectID+" add contributorList = "+userID+" return after @this")
 		.then((r:any)=>{
 			winston.debug('user added as contributor to project:', r);
 			return {code:200,response:{status:0,message:"Success",project:r[0]}};
@@ -72,8 +72,8 @@ export class ProjectBackend{
 	}
 
 	/** Adds the user to the mentorList of a project */
-	setUserAsMentor(userId:string,projectId:string):Promise<any>{
-		return this.db.query("update "+projectId+" add mentorList = "+userId+" return after @this")
+	setUserAsMentor(userID:string,projectID:string):Promise<any>{
+		return this.db.query("update "+projectID+" add mentorList = "+userID+" return after @this")
 		.then((r:any)=>{
 			return {code:200,response:{status:0,message:"Success",project:r[0]}};
 		}).catch((err:Error)=>{
@@ -83,20 +83,20 @@ export class ProjectBackend{
 	}
 
 	/** Insert a new thread under the given project by the current user*/
-	createThreadByPoster(thread:any,userId:string,projectId:string):Promise<any>{
-		return this.db.query("create vertex Thread set title=:title, description=:description, timestamp=sysdate(), poster="+userId,{
+	createThreadByPoster(thread:any,userID:string,projectID:string):Promise<any>{
+		return this.db.query("create vertex Thread set title=:title, description=:description, timestamp=sysdate(), poster="+userID,{
 			params:{
 				title:thread.title,
 				description:thread.description
 			}
 		}).
 		then((resultSet:any)=>{
-			return this.addThreadToProject(resultSet[0],projectId);
+			return this.addThreadToProject(resultSet[0],projectID);
 		})
 	}
 
-	private addThreadToProject(thread:any,projectId:string):Promise<any>{
-		return this.db.query("update "+projectId+" add threadList = "+thread["@rid"]+" return after @this")
+	private addThreadToProject(thread:any,projectID:string):Promise<any>{
+		return this.db.query("update "+projectID+" add threadList = "+thread["@rid"]+" return after @this")
 		.then((r:any)=>{
 			winston.info('Added thread to project:', thread["@rid"]);
 			return {code:200,response:{status:0,message:"Success",thread:thread}};
@@ -106,16 +106,39 @@ export class ProjectBackend{
 		});
 	}
 
-	createCommentByPoster(comment:any,threadId:string,userId:string):Promise<any>{
-		return this.db.query("Create Vertex Comment Set message=:message, timestamp=sysdate(), poster="+userId,{
+	createCommentByPoster(comment:any,threadID:string,userID:string):Promise<any>{
+		return this.db.query("Create Vertex Comment Set message=:message, timestamp=sysdate(), poster="+userID,{
 			params:{
 				message:comment.message
 			}
-		}).then((resultSet:any)=>{
-			return this.db.query("Update "+threadId+" add commentList = "+resultSet[0]["@rid"]).
+		}).then((resultSet:any[])=>{
+			return this.db.query("Update "+threadID+" add commentList = "+resultSet[0]["@rid"]).
 			then((v:any)=>{
 				return {code:200,response:{status:0,message:"Success",comment:resultSet[0]}};
 			})
-		})
+		}).catch((error:Error)=>{
+			return {code:500,response:{status:1,message:error.message}};
+		});
+	}
+
+	createContribution(contribution:any,projectID:string,userID:string):Promise<any>{
+		return this.db.query("Create Vertex Contribution Set message=:message, timestamp=sysdate(), user="+userID,{
+			params:{
+				message:contribution.message
+			}
+		}).then((resultSet:any[])=>{
+			let persisted=resultSet[0];
+			return this.db.query("Select progression from Project where @rid= "+projectID).
+			then((progressionRs:any[])=>{
+				let progression=progressionRs[0].progression;//progression column of the first row
+				return this.db.query("Update "+progression+" add updates = "+persisted["@rid"]).
+				then((v:any)=>{
+					return {code:200,response:{status:0,message:"Success",comment:persisted}};
+				})
+			})
+			
+		}).catch((error:Error)=>{
+			return {code:500,response:{status:1,message:error.message}};
+		});
 	}
 }
