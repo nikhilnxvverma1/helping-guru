@@ -32,7 +32,8 @@ export class ProjectBackend{
 		}).one().then((p:any)=>{
 			return Promise.all([
 				this.setUserAsContributor(user["@rid"],p["@rid"]),
-				this.attachProgressionTo(p)
+				this.attachProgressionTo(p),
+				this.setCreatorOfProject(p["@rid"],user["@rid"])
 			]);
 		}).then((values:[any,any[]])=>{
 			let contributionStatus=values[0].response.status;
@@ -50,6 +51,13 @@ export class ProjectBackend{
 			winston.error("New Project insertion: "+error.message);
 			return {code:500,response:{status:1,message:"Error on project insertion "+error.message}};
 		})
+	}
+
+	private setCreatorOfProject(projectID:string,userID:string):Promise<any>{
+		return this.db.query("update "+projectID+" set createdBy = "+userID+" return after @this").
+		then((rs:any[])=>{
+			return rs[0];
+		});
 	}
 
 	private attachProgressionTo(project:any):Promise<any[]>{

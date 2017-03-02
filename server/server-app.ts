@@ -322,6 +322,38 @@ export class ServerApp {
 				});
 			}
 		})
+
+		//join as contributor
+		this.app.put('/api/project/join-contributor', (req:express.Request, res:express.Response) => {
+			winston.debug("Attempting to put user as contributor of the project");
+			let loggedInUser=(<any>req).session.user;
+			if(!loggedInUser){
+				res.status(401).send("user not found");
+			}else{
+				let data=(<any>req).body;
+				this.projectBackend.setUserAsContributor((<any>req).session.user['@rid'],data["projectID"]).
+				then((attempt:any)=>{
+					//respond back with an appropriate status code
+					jsonHeader(res).status(attempt.code).send(JSON.stringify(attempt.response));
+				});
+			}
+		})
+
+		//remove as contributor
+		this.app.put('/api/project/remove-contributor', (req:express.Request, res:express.Response) => {
+			winston.debug("Attempting to put user as contributor of the project");
+			let loggedInUser=(<any>req).session.user;
+			if(!loggedInUser){
+				res.status(401).send("user not found");
+			}else{
+				let data=(<any>req).body;
+				this.projectBackend.removeUserAsContributor((<any>req).session.user['@rid'],data["projectID"]).
+				then((attempt:any)=>{
+					//respond back with an appropriate status code
+					jsonHeader(res).status(attempt.code).send(JSON.stringify(attempt.response));
+				});
+			}
+		})
 	}
 
     public start() {//this method is called after setRoutes()
