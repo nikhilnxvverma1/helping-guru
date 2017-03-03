@@ -149,51 +149,46 @@ export class ServerApp {
 		this.app.get('/api/all-projects', (req:express.Request, res:express.Response) => {
 			winston.debug("Retrieving all the projects");
 
-			//Dummy testing
-			let allProjects:Project[]=[];
-			for(let i=0;i<40;i++){
-				let project=new MockRetriever().buildSingleProject();
-				//purposely nullifying for testing purposes
-				project.progression=null;
-				project.threads=null;
-				allProjects.push(project);
+			let loggedInUser=(<any>req).session.user;
+			if(!loggedInUser){
+				res.status(401).send("user not found");
+			}else{
+				this.projectBackend.getAllProjects().
+				then((attempt:any)=>{
+					jsonHeader(res).status(attempt.code).send(JSON.stringify(attempt.response));
+				})
 			}
-
-			jsonHeader(res).send(JSON.stringify(allProjects));
 		});
 
 		//get only the project for the user in session
 		this.app.get('/api/my-projects', (req:express.Request, res:express.Response) => {
-			winston.debug("Retrieving only logged in users' projects");
+			winston.debug("Retrieving only logged in user's projects");
 
-			//Dummy testing
-			let allProjects:Project[]=[];
-			for(let i=0;i<40;i++){
-				let project=new MockRetriever().buildSingleProject();
-				//purposely nullifying for testing purposes
-				project.progression=null;
-				project.threads=null;
-				allProjects.push(project);
+			let loggedInUser=(<any>req).session.user;
+			if(!loggedInUser){
+				res.status(401).send("user not found");
+			}else{
+				this.projectBackend.getProjectsOfUser(loggedInUser["@rid"]).
+				then((attempt:any)=>{
+					jsonHeader(res).status(attempt.code).send(JSON.stringify(attempt.response));
+				})
 			}
-
-			jsonHeader(res).send(JSON.stringify(allProjects));
 		});
 
 		//get projects for a search term
-		this.app.get('/api/search-projects', (req:express.Request, res:express.Response) => {
+		this.app.get('/api/search', (req:express.Request, res:express.Response) => {
 			winston.debug("Retrieving projects for a selected search term");
 
-			//Dummy testing
-			let allProjects:Project[]=[];
-			for(let i=0;i<40;i++){
-				let project=new MockRetriever().buildSingleProject();
-				//purposely nullifying for testing purposes
-				project.progression=null;
-				project.threads=null;
-				allProjects.push(project);
+			let loggedInUser=(<any>req).session.user;
+			if(!loggedInUser){
+				res.status(401).send("user not found");
+			}else{
+				let term=(<any>req).query.term;
+				this.projectBackend.searchProjects(term).
+				then((attempt:any)=>{
+					jsonHeader(res).status(attempt.code).send(JSON.stringify(attempt.response));
+				})
 			}
-
-			jsonHeader(res).send(JSON.stringify(allProjects));
 		});
 
 		//get hints for a search term

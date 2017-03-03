@@ -186,4 +186,39 @@ export class ProjectBackend{
 			return {code:500,response:{status:1,message:error.message}};
 		});
 	}
+
+	//--------------GET requests-----------------
+
+	/** Returns all project that the user either contributed to or mentored */
+	getProjectsOfUser(userID:string):Promise<any>{
+		return this.db.query("select from project where @rid in (select projectsContributed from User where @rid = "+userID+") or"+
+		 " @rid in (select projectsMentored from User where @rid = "+userID+")").
+		then((rs:any[])=>{
+			return {code:200,response:{status:0,projectList:rs}}
+		}).catch((error:Error)=>{
+			return {code:500,response:{status:1}}
+		});
+	}
+
+	/** Returns all the projects in the system*/
+	getAllProjects():Promise<any>{
+		return this.db.query("select from project").
+		then((rs:any[])=>{
+			return {code:200,response:{status:0,projectList:rs}}
+		}).catch((error:Error)=>{
+			return {code:500,response:{status:1}}
+		});
+	}
+
+	/** Returns all projects matching the given term. Basically checks for match against title and tldr */
+	searchProjects(term:string){
+		let searchTerm = term.toLowerCase();
+		return this.db.query("select from project where title.toLowerCase() like '%"+searchTerm+"%' or tldr.toLowerCase() like '%"+searchTerm+"%'").
+		then((rs:any[])=>{
+			return {code:200,response:{status:0,projectList:rs}}
+		}).catch((error:Error)=>{
+			return {code:500,response:{status:1}}
+		});
+	}
+
 }
