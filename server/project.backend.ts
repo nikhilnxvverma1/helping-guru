@@ -194,9 +194,9 @@ export class ProjectBackend{
 		return this.db.query("select from project where @rid in (select projectsContributed from User where @rid = "+userID+") or"+
 		 " @rid in (select projectsMentored from User where @rid = "+userID+")").
 		then((rs:any[])=>{
-			return {code:200,response:{status:0,projectList:rs}}
+			return {code:200,response:{status:0,message:"Success",projectList:rs}}
 		}).catch((error:Error)=>{
-			return {code:500,response:{status:1}}
+			return {code:500,response:{status:1,message:error.message}}
 		});
 	}
 
@@ -204,9 +204,9 @@ export class ProjectBackend{
 	getAllProjects():Promise<any>{
 		return this.db.query("select from project").
 		then((rs:any[])=>{
-			return {code:200,response:{status:0,projectList:rs}}
+			return {code:200,response:{status:0,message:"Success",projectList:rs}}
 		}).catch((error:Error)=>{
-			return {code:500,response:{status:1}}
+			return {code:500,response:{status:1,message:error.message}}
 		});
 	}
 
@@ -215,9 +215,70 @@ export class ProjectBackend{
 		let searchTerm = term.toLowerCase();
 		return this.db.query("select from project where title.toLowerCase() like '%"+searchTerm+"%' or tldr.toLowerCase() like '%"+searchTerm+"%'").
 		then((rs:any[])=>{
-			return {code:200,response:{status:0,projectList:rs}}
+			return {code:200,response:{status:0,message:"Success",projectList:rs}}
 		}).catch((error:Error)=>{
-			return {code:500,response:{status:1}}
+			return {code:500,response:{status:1,message:error.message}}
+		});
+	}
+
+	/** Returns user for the given user ID*/
+	getUser(userID:string):Promise<any>{
+		return this.db.query("select from User where @rid = "+userID).
+		then((rs:any[])=>{
+			let user=rs[0];
+			delete user.password;//remove the password before sending the response over to the client
+			return {code:200,response:{status:0,message:"Success",user:user}}
+		}).catch((error:Error)=>{
+			return {code:500,response:{status:1,message:error.message}}
+		});
+	}
+
+	/** Returns project for the given project ID*/
+	getProject(projectID:string):Promise<any>{
+		return this.db.query("select from Project where @rid = "+projectID).
+		then((rs:any[])=>{
+			let project=rs[0];
+			return {code:200,response:{status:0,message:"Success",project:project}}
+		}).catch((error:Error)=>{
+			return {code:500,response:{status:1,message:error.message}}
+		});
+	}
+
+	/** Returns threads under a given project ID*/
+	getThreadsForProject(projectID:string):Promise<any>{
+		return this.db.query("select @rid,title,descriptio,timestamp,poster.firstName as firstName, poster.lastName as lastName, "+
+		"poster.@rid as userID from thread where @rid in (select threadList from project where @rid = "+projectID+")").
+		then((rs:any[])=>{
+			return {code:200,response:{status:0,message:"Success",threadList:rs}}
+		}).catch((error:Error)=>{
+			return {code:500,response:{status:1,message:error.message}}
+		});
+	}
+
+	/** Returns comment under a given thread ID*/
+	getCommentsForThread(threadID:string):Promise<any>{
+		return this.db.query("select @rid,message,timestamp,poster.firstName as firstName,poster.lastName as lastName, "+
+		"poster.@rid as userID from comment where @rid in (select commentList from Thread where @rid ="+threadID+")").
+		then((rs:any[])=>{
+			return {code:200,response:{status:0,message:"Success",commentList:rs}}
+		}).catch((error:Error)=>{
+			return {code:500,response:{status:1,message:error.message}}
+		});
+	}
+
+	/** Returns progression under a given thread ID*/
+	getProjectProgression(projectID:string):Promise<any>{
+		return this.db.query("select from progression where @rid in (select progression from project where @rid="+projectID+")").
+		then((rs:any[])=>{
+			let progression=rs[0];
+			return this.db.query("select @rid,message,timestamp,user.firstName as firstname,user.lastName as lastname,user.@rid "+
+			"as userId from contribution where @rid in (select updates from progression where @rid = "+progression['@rid']+")").
+			then((rsc:any[])=>{
+				return {code:200,response:{status:0,message:"Success",progression:progression,contributionList:rsc}}
+			});
+		}).catch((error:Error)=>{
+			winston.error("GET Progression: " +error.message);
+			return {code:500,response:{status:1,message:error.message}}
 		});
 	}
 

@@ -8,12 +8,6 @@ import bodyParser = require('body-parser');
 import session = require('express-session');
 import { UserBackend,AuthenticationResult,statusCodeForLogin,statusCodeForSignup } from './user.backend';
 import { ProjectBackend } from './project.backend';
-import requestPromise=require('request-promise');
-import { MockRetriever } from './mock-retriever';
-
-//TODO remove these modal dependencies from the server
-import { Project } from './project';
-import { User } from './user';
 
 export class ServerApp {
     
@@ -53,21 +47,8 @@ export class ServerApp {
 		this.app.get('/api/rough', (req:express.Request, res:express.Response) => {
             winston.debug("Rough work for development purposes");
             //Do rough work in this end point
-            /*let options:any = {
-                uri: 'https://randomuser.me/api/',
-                qs: {
-                    results: 1,
-                    exc: 'location,dbo,registered,phone,cell,id,nat'
-                },
-                json: true
-            }
-            return requestPromise(options).then((v:any)=>{
-                res.send(v);
-            });*/
-            //--------------------------------
-			let mock = new MockRetriever();
-			let project:any = mock.buildSingleProject();
-			res.send(project);
+           
+			res.send("rough work");
 			
 			//--------------------------------
 		});
@@ -106,43 +87,63 @@ export class ServerApp {
 		this.app.get('/api/project', (req:express.Request, res:express.Response) => {
 			winston.debug("Retrieving a single project");
 
-			//Dummy testing
-			let project=new MockRetriever().buildSingleProject();
-			//purposely nullifying for testing purposes
-			project.progression=null;
-			project.threads=null;
-
-			jsonHeader(res).send(JSON.stringify(project));
+			let loggedInUser=(<any>req).session.user;
+			if(!loggedInUser){
+				res.status(401).send("user not found");
+			}else{
+				let projectID=(<any>req).query.projectID;
+				this.projectBackend.getProject(projectID).
+				then((attempt:any)=>{
+					jsonHeader(res).status(attempt.code).send(JSON.stringify(attempt.response));
+				})
+			}
 		});
 
 		//get a project's threads
 		this.app.get('/api/project/threads', (req:express.Request, res:express.Response) => {
 			winston.debug("Retrieving a single project's threads");
 
-			//Dummy testing
-			let project=new MockRetriever().buildSingleProject();
-		
-			jsonHeader(res).send(JSON.stringify(project.threads));
+			let loggedInUser=(<any>req).session.user;
+			if(!loggedInUser){
+				res.status(401).send("user not found");
+			}else{
+				let projectID=(<any>req).query.projectID;
+				this.projectBackend.getThreadsForProject(projectID).
+				then((attempt:any)=>{
+					jsonHeader(res).status(attempt.code).send(JSON.stringify(attempt.response));
+				})
+			}
 		});
 
 		//get the comments in a project's threads
-		this.app.get('/api/project/threads/comments', (req:express.Request, res:express.Response) => {
+		this.app.get('/api/project/thread/comments', (req:express.Request, res:express.Response) => {
 			winston.debug("Retrieving comments in a project's thread");
 
-			//Dummy testing
-			let project=new MockRetriever().buildSingleProject();
-		
-			jsonHeader(res).send(JSON.stringify(project.threads[0].commentList));
+			let loggedInUser=(<any>req).session.user;
+			if(!loggedInUser){
+				res.status(401).send("user not found");
+			}else{
+				let threadID=(<any>req).query.threadID;
+				this.projectBackend.getCommentsForThread(threadID).
+				then((attempt:any)=>{
+					jsonHeader(res).status(attempt.code).send(JSON.stringify(attempt.response));
+				})
+			}
 		});
 
 		//get the progression report of a project
 		this.app.get('/api/project/progression', (req:express.Request, res:express.Response) => {
 			winston.debug("Retrieving a single project's progression report");
-
-			//Dummy testing
-			let project=new MockRetriever().buildSingleProject();
-		
-			jsonHeader(res).send(JSON.stringify(project.progression));
+			let loggedInUser=(<any>req).session.user;
+			if(!loggedInUser){
+				res.status(401).send("user not found");
+			}else{
+				let projectID=(<any>req).query.projectID;
+				this.projectBackend.getProjectProgression(projectID).
+				then((attempt:any)=>{
+					jsonHeader(res).status(attempt.code).send(JSON.stringify(attempt.response));
+				})
+			}
 		});
 
 		//get all the projects 
@@ -175,7 +176,7 @@ export class ServerApp {
 			}
 		});
 
-		//get projects for a search term
+		//get hints for a search term
 		this.app.get('/api/search', (req:express.Request, res:express.Response) => {
 			winston.debug("Retrieving projects for a selected search term");
 
@@ -191,36 +192,20 @@ export class ServerApp {
 			}
 		});
 
-		//get hints for a search term
-		this.app.get('/api/search-term', (req:express.Request, res:express.Response) => {
-			winston.debug("Retrieving hints for a search term");
+		//get the particular user (whose ID will be supplied as in the url)
+		this.app.get('/api/user/:userID', (req:express.Request, res:express.Response) => {
+			winston.debug("Retrieving projects for a selected search term");
 
-			//Dummy testing
-			let allProjects:Project[]=[];
-			for(let i=0;i<40;i++){
-				let project=new MockRetriever().buildSingleProject();
-				//purposely nullifying for testing purposes
-				project.progression=null;
-				project.threads=null;
-				allProjects.push(project);
+			let loggedInUser=(<any>req).session.user;
+			if(!loggedInUser){
+				res.status(401).send("user not found");
+			}else{
+				let userID=(<any>req).params['userID']
+				this.projectBackend.getUser(userID).
+				then((attempt:any)=>{
+					jsonHeader(res).status(attempt.code).send(JSON.stringify(attempt.response));
+				})
 			}
-
-			jsonHeader(res).send(JSON.stringify(allProjects));//only title and description along with RID
-		});
-
-		//get data for a particular user
-		this.app.get('/api/user', (req:express.Request, res:express.Response) => {
-			winston.debug("Retrieving details for a user");
-
-			//Dummy testing
-			let user=new User();
-			user.firstName="Nikhil";
-			user.lastName="Verma";
-			user.email="asdf@mail.com";
-			user.points=120;
-			user.thumbnailUrl="https://randomuser.me/api/portraits/men/0.jpg";
-
-			jsonHeader(res).send(JSON.stringify(user));
 		});
 
 		//create a new project

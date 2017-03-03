@@ -160,7 +160,7 @@ export class SchemaBackend{
 		return this.createClassIfNotExists(CONTRIBUTION,[
 			{name:"message",type:"String"},
 			{name:"timestamp",type:"Date"},
-			{name:"user",type:"LinkList",linkedClass:USER},
+			{name:"user",type:"Link",linkedClass:USER},
 		],VERTEX_SUPER_CLASS);
 	}
 
