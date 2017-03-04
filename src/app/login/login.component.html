@@ -4,33 +4,34 @@
 <div class="container big-top-margin">
 	<form (ngSubmit)="doLogin()" #loginForm="ngForm">
 		<div class="row">
-			<div class="col s12 m6 l4 offset-m3 offset-l4">
-<input class="textbox" type="text" placeholder="email" name="email" [(ngModel)]="attempt.email" required>
+			<div class="input-field col s12 m6 l4 offset-m3 offset-l4">
+				<input id="email" type="text" name="email" [(ngModel)]="attempt.email" required>
+				<label for="email">Email</label>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col s12 m6 l4 offset-m3 offset-l4">
-<input class="textbox"type="password" placeholder="password" name="password" [(ngModel)]="attempt.password" required>
+			<div class="input-field col s12 m6 l4 offset-m3 offset-l4">
+				<input type="password" name="password" [(ngModel)]="attempt.password" required>
+				<label for="password">Password</label>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col s12 m6 l4 offset-m3 offset-l4">
-<button [disabled]="!loginForm.form.valid" type="button" (click)="doLogin()">Submit</button>
+			<div class="col s12 m2 offset-m4 l3 offset-l4">
+				<button class="waves-effect waves-light btn" [disabled]="!loginForm.form.valid" type="button" (click)="doLogin()">Login</button>
+			</div>
+			<div class="col s12 m5 l2">
+				<a id="signup" class="waves-effect waves-light btn" routerLink="/signup">Sign up</a>
 			</div>
 		</div>
+		<ng-container *ngIf="invalidUsernameOrPassword">
+			<div class="row">
+				<div class="col s12 m6 l4 offset-m3 offset-l4 center-align">
+					Invalid username or password
+				</div>
+			</div>
+		</ng-container>
 	</form>
 </div>
-<!--<form (ngSubmit)="doLogin()" #loginForm="ngForm">
-	<input type="text" placeholder="email" name="email" [(ngModel)]="attempt.email" required>
-	<input type="password" placeholder="password" name="password" [(ngModel)]="attempt.password" required>
-	<button [disabled]="!loginForm.form.valid" type="button" (click)="doLogin()">Submit</button>
-</form>-->
-
-<ng-container *ngIf="invalidUsernameOrPassword">
-	<div>Invalid username or password</div>
-</ng-container>
-
-<a routerLink="/signup"> Sign up</a>
 
 <footer>
 	
