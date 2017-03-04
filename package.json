@@ -26,6 +26,7 @@
     "core-js": "^2.4.1",
     "express": "^4.14.1",
     "express-session": "^1.15.1",
+    "materialize-css": "^0.98.0",
     "node-sass": "^4.5.0",
     "orientjs": "^2.2.4",
     "request": "^2.79.0",
