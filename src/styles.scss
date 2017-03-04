@@ -1,1 +1,59 @@
 /* You can add global styles to this file, and also import other style files */
+
+body{
+	background:$body-background;
+}
+
+.slant-hero-section{
+	/* Rectangle 2: */
+	background-image: linear-gradient(144deg, #A97EC0 0%, #DC81A5 100%);
+	width:100%;
+	height:300px;
+	position: relative;
+}
+
+
+.bottom-right-slant{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 0;
+	height: 0;
+	border-bottom:100px solid $body-background;
+	border-left:100vw solid transparent;
+}
+
+footer{
+	background: $footer-background;
+	width:100%;
+	height:250px;
+	position: absolute;
+	bottom: 0;
+	left:0;
+	right:0;
+}
+
+// this class only exists for debugging purposes
+.debug{
+	height: 10px;
+	background:red;
+}
+
+//---------------------------------------------- Size Helpers ----------------------------------------------
+
+.big-top-margin{
+	margin-top:40px;
+}
+
+.medium-top-margin{
+	margin-top:30px;
+}
+
+//---------------------------------------------- Custom Objects ----------------------------------------------
+
+input.textbox{
+	background:#F5F4F5;
+	color:#AAAAAA;
+	padding:4px;
+	font-size:1.2em;
+}
