@@ -35,6 +35,10 @@ footer{
 	bottom: 0;
 	left:0;
 	right:0;
+	color:#B3B3B3;
+	a{
+		color:#B3B3B3;
+	}
 }
 
 // this class only exists for debugging purposes
@@ -53,11 +57,12 @@ footer{
 	margin-top:30px;
 }
 
+.big-margin-left{
+	margin-left:40px;
+}
+
 //---------------------------------------------- Custom Objects ----------------------------------------------
 
-input.textbox{
-	background:#F5F4F5;
-	color:#AAAAAA;
-	padding:4px;
-	font-size:1.2em;
+.undecorated-list{
+	list-style: none;
 }
