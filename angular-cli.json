@@ -19,12 +19,12 @@
       "tsconfig": "tsconfig.json",
       "prefix": "app",
       "styles": [
-		"../node_modules/materialize-css/sass/materialize.scss",
+		"materialize/sass/materialize.scss",
         "styles.scss"
       ],
       "scripts": [
-		"../node_modules/materialize-css/bin/jquery-2.1.1.min.js",
-		"../node_modules/materialize-css/dist/js/materialize.min.js"
+		"../node_modules/jquery/dist/jquery.min.js",
+		"materialize/js/bin/materialize.min.js"
 	  ],
       "environments": {
         "source": "environments/environment.ts",
