@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { User } from '../../../models/user';
 
 @Component({
   selector: 'app-header',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+	@Input() private user:User;
 
-  ngOnInit() {
-  }
+	constructor() { }
+
+	ngOnInit() {
+		this.user=User.dummy();//TODO testing
+	}
 
 }
