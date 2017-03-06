@@ -14,7 +14,6 @@ a.project-image{
 
 .project-details{
 	overflow: hidden;
-	width: 730px;
 	padding-left: 30px;
 	color: #646464;
 	height: $project-image-size;
@@ -24,5 +23,12 @@ a.project-image{
 	}
 	a:hover{
 		color:#FF8559;
+	}
+}
+
+
+@media only screen and (max-width: 600px) {
+	.project-details{
+		padding-left: 10px;
 	}
 }

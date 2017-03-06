@@ -1,25 +1,20 @@
 $strip-height:30px;
-$left-gap:200px;
+$left-gap:80px;
 .project-category-strip{
 	background: #F4F3F4;
 	width: 100%;
 	height: $strip-height;
-	padding-left: $left-gap;
 	box-shadow: 0 1px 4px 0 rgba(0,0,0,0.19);
+	line-height: $strip-height;
 
-	ul{
-		list-style-type: none;
-		line-height: $strip-height;
-		margin-top: 0;
-		margin-bottom: 0;
-		li{
-			display: inline-block;
-			padding-right: 20px;
-			label{
-				font-size: 0.8rem;
-			}
+	.project-category-option{
+		display: inline-block;
+		padding-right: 20px;
+		label{
+			font-size: 0.8rem;
 		}
 	}
+
 }
 
 .dashboard-content{

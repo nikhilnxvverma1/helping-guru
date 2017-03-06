@@ -7,13 +7,12 @@ header{
 	background-image: -webkit-linear-gradient(top left, #A97EC0 0%, #DC81A5 100%);
 	background-image: -o-linear-gradient(top left, #A97EC0 0%, #DC81A5 100%);
 	background-image: linear-gradient(to bottom right, #A97EC0 0%, #DC81A5 100%);
+	margin-bottom: 0;
 }
 
 .logo-container{
-	width: 25px;
 	height: $header-height;
-	margin-left: 55px;
-	margin-right: 70px;
+	margin-left: 10px;
 	padding-top:12px;
 	padding-bottom: 12px;
 	display: inline-block;
@@ -27,9 +26,9 @@ header{
 }
 
 .search-box{
+	float: initial;
 	display: inline-block;
 	vertical-align: top;
-	width: 50%;
 	height:$header-height;
 	line-height: $header-height;
 	margin-left: 20px;

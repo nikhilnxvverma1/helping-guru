@@ -1,9 +1,9 @@
-<header>
-	<a class="logo-container" routerLink="/home">
+<header class="row">
+	<div class="logo-container col s1 m1" routerLink="/home">
 		<img src="assets/logo.svg" alt="logo">
-	</a>
+	</div>
 
-	<div class="search-box">
+	<div class="search-box col s4 m6 offset-m1">
 		<input type="text" placeholder="Search">
 	</div>
 
@@ -11,14 +11,13 @@
 		<li class="new-project">
 			<a routerLink="new-project">
 				<img src="assets/plus.svg" alt="plus">
-				New Project
+				<span class="hide-on-med-and-down">New Project</span>
 			</a>
 			</li>
 		<li>
 			<a>
-				<div class="profile-pic" [style.background-image]="'url('+user.thumbnailUrl+')'">
-				</div>
-				{{user.firstName}} {{user.lastName}}
+				<div class="profile-pic" [style.background-image]="'url('+user.thumbnailUrl+')'"></div>
+				<span class="hide-on-med-and-down">{{user.firstName}} {{user.lastName}}</span>
 			</a>
 		</li>
 	</ul>
