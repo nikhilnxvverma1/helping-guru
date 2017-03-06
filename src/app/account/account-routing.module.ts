@@ -12,12 +12,15 @@ import { ProgressionComponent } from './project/progression/progression.componen
 import { DiscussionComponent } from './project/discussion/discussion.component';
 import { FullThreadComponent } from './project/full-thread/full-thread.component';
 import { NewProjectComponent } from './new-project/new-project.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
       { path:'home', component:HomeComponent, 
 		children:[
+			{ path: '', redirectTo: 'dashboard', pathMatch:'full'},
+			{ path:'dashboard', component:DashboardComponent},
 			{ path:'new-project', component:NewProjectComponent},
 			{ path:'my-projects', component:MyProjectsComponent},
 			{ path:'all-projects', component:AllProjectsComponent},

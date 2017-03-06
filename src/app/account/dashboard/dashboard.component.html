@@ -1,0 +1,14 @@
+<div class="project-category-strip">
+	<ul>
+		<li>
+			<input type="radio" name="projectCategory" value="1" id="my-project-option"
+			[checked]="projectCategory==1" (change)="setProjectCategory(1)">
+			<label for="my-project-option">My Projects</label>
+		</li>
+		<li>
+			<input type="radio" name="projectCategory" value="2" id="all-project-option"
+				(change)="setProjectCategory(2)">
+			<label for="all-project-option">All Projects</label>
+		</li>
+	</ul>
+</div>

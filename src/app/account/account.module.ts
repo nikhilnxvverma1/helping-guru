@@ -23,6 +23,7 @@ import { CommentComponent } from './project/comment/comment.component';
 import { ContributionComponent } from './project/contribution/contribution.component';
 import { FullThreadComponent } from './project/full-thread/full-thread.component';
 import { NewProjectComponent } from './new-project/new-project.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 @NgModule({
@@ -36,7 +37,7 @@ import { NewProjectComponent } from './new-project/new-project.component';
   schemas:[CUSTOM_ELEMENTS_SCHEMA],
   providers: [AccountService,ProjectService],
   declarations: [HeaderComponent, HomeComponent, MyProjectsComponent, ProjectItemComponent, AllProjectsComponent, SearchResultComponent,
-  	ProjectHomeComponent, DescriptionComponent, ProgressionComponent, DiscussionComponent, ThreadComponent, CommentComponent, ContributionComponent,FullThreadComponent, NewProjectComponent
+  	ProjectHomeComponent, DescriptionComponent, ProgressionComponent, DiscussionComponent, ThreadComponent, CommentComponent, ContributionComponent,FullThreadComponent, NewProjectComponent, DashboardComponent
   ]
 })
 export class AccountModule { }
