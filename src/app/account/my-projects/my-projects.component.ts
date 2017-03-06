@@ -21,10 +21,21 @@ export class MyProjectsComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
-		this.projectService.projectForLoggedInUser().subscribe((projectList:Project[])=>{
-			console.debug("Received "+projectList.length+" projects from server");
-			this.projectList=projectList;
-		});
+		this.loadData(true);
+	}
+
+	loadData(dummy=false){
+		if(dummy){
+			this.projectList=[];
+			for(let i=0;i<10;i++){
+				this.projectList.push(Project.dummy());
+			}
+		}else{
+			this.projectService.projectForLoggedInUser().subscribe((projectList:Project[])=>{
+				console.debug("Received "+projectList.length+" projects from server");
+				this.projectList=projectList;
+			});
+		}
 	}
 
 }

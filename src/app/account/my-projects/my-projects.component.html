@@ -1,1 +1,5 @@
-<app-project-item *ngFor="let project of projectList" [project]="project">
+<ul class="my-project-list">
+	<li *ngFor="let item of projectList">
+		<app-project-item [project]="item"></app-project-item>
+	</li>
+</ul>
