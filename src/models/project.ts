@@ -21,7 +21,7 @@ export class Project{
 		project.title="Spam Remover";
 		project.tldr="Android app to get rid of unwanted junk SMS";
 		project.description="Laborum voluptate facilis. Aut magnam nisi et recusandae. Dolorem architecto sed. Iusto velit debitis quia ut. Ipsa omnis eum incidunt illum quisquam at.";
-		project.imageUrl="https://dummyimage.com/300x200/333/666.png?text=dummy";
+		project.imageUrl="https://dummyimage.com/300x200/aaa/555.png?text=dummy";
 		return project;
 	}
 }

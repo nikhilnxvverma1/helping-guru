@@ -13,7 +13,7 @@
 	</ul>
 </div>
 
-<div class="dashboard-content" [ngSwitch]="projectCategory">
+<div class="dashboard-content row" [ngSwitch]="projectCategory">
 	<app-my-projects *ngSwitchCase="1">Loading</app-my-projects>
 	<app-all-projects *ngSwitchCase="2">Loading</app-all-projects>
 </div>

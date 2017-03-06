@@ -1,5 +1,10 @@
-<div>
-	
-	<a routerLink="../project">{{project.title}}</a>
-	<p>{{project.tldr}}</p>
+<div class="project-box-container col offset-l2">
+	<div class="project-box row">
+		<a class="project-image col s12 m4 l2" routerLink="../project"><img [attr.src]="project.imageUrl" alt="project image"></a>
+		<div class="project-details col s12 m8 l8">
+			<a routerLink="../project"><h4>{{project.title}}</h4></a>
+			<h5>{{project.tldr}}</h5>
+			<h6>{{project.description}}</h6>
+		</div>
+	</div>
 </div>

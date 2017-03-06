@@ -1,0 +1,28 @@
+$project-image-size:200px;
+a.project-image{
+	display: inline-block;
+	float: left;
+	overflow: hidden;
+	height: $project-image-size;
+}
+
+.project-box:after{
+	clear: both;
+	content: "";
+	display: block;
+}
+
+.project-details{
+	overflow: hidden;
+	width: 730px;
+	padding-left: 30px;
+	color: #646464;
+	height: $project-image-size;
+	a{
+		color:#646464;
+		text-decoration: none;
+	}
+	a:hover{
+		color:#FF8559;
+	}
+}
