@@ -24,6 +24,7 @@ import { ContributionComponent } from './project/contribution/contribution.compo
 import { FullThreadComponent } from './project/full-thread/full-thread.component';
 import { NewProjectComponent } from './new-project/new-project.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { ProjectCardComponent } from './project-card/project-card.component';
 
 
 @NgModule({
@@ -37,7 +38,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
   schemas:[CUSTOM_ELEMENTS_SCHEMA],
   providers: [AccountService,ProjectService],
   declarations: [HeaderComponent, HomeComponent, MyProjectsComponent, ProjectItemComponent, AllProjectsComponent, SearchResultComponent,
-  	ProjectHomeComponent, DescriptionComponent, ProgressionComponent, DiscussionComponent, ThreadComponent, CommentComponent, ContributionComponent,FullThreadComponent, NewProjectComponent, DashboardComponent
+  	ProjectHomeComponent, DescriptionComponent, ProgressionComponent, DiscussionComponent, ThreadComponent, CommentComponent, ContributionComponent,FullThreadComponent, NewProjectComponent, DashboardComponent, ProjectCardComponent
   ]
 })
 export class AccountModule { }

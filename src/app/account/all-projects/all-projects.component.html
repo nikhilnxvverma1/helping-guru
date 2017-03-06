@@ -1,3 +1,3 @@
-<p>
-  all-projects works!
-</p>
+<!--<div class="project-card-container col s12 m4 l3" *ngFor="let item of projectList">-->
+	<app-project-card *ngFor="let item of projectList" [project]="item"></app-project-card>
+<!--</div>-->
