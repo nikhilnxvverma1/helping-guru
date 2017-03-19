@@ -1,0 +1,17 @@
+<manifest alg="2" build="2017.0.2.363" opt="true" iceEnabled="true" iceMarkupVersion="2" iceEnabledOptions="link,responsive,cachebuster,textStyling" exportTarget="other" domain="static.com" resolutions="1x" timestamp="1489850031016">
+  <folder name="css">
+    <file name="site_global.css" crc="443350757"/>
+    <file name="project-home.css" crc="496051314" ref="project-home"/>
+    <file name="index.css" crc="359930046" ref="index"/>
+  </folder>
+  <folder name="scripts">
+    <file name="jquery-1.8.3.min.js" crc="209076791" ref="index:project-home"/>
+    <file name="museutils.js" crc="4232573551" ref="index:project-home"/>
+    <file name="whatinput.js" crc="86476730" ref="index:project-home"/>
+    <file name="museconfig.js" crc="4152223963" ref="index:project-home"/>
+    <file name="jquery.watch.js" crc="3844535323" ref="index:project-home"/>
+    <file name="require.js" crc="4234670167" ref="index:project-home"/>
+  </folder>
+  <file name="index.html" crc="28769364" seo="true" mt="1489849797784" redirect="true"/>
+  <file name="project-home.html" crc="20970764" seo="true" mt="1489849773468" redirect="true"/>
+</manifest>
