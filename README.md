@@ -2,7 +2,7 @@
 Hackathon > 24 hours > Simple Idea > Project Management for beginners > Completion Status : backend = 90% , frontend = 40%
 
 # Long:
-I sat in a bus, that took me to Binghampton University where I paired up with a guy in hopes of winning a hackathon at which we failed, but ended up learning a lot about technology anyway.
+For a hackathon event taking place at Binghampton University, I ideated working on a webapp which pairs novice programmers to expert ones.We managed to complete a major portion of the backend but we could'nt finish on time.  Nevertheless, we learned a lot.
 
 ## Idea
 Helping Guru is a social platform that helps beginner developers in their projects by attaching
