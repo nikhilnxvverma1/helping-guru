@@ -46,6 +46,7 @@ export class SchemaBackend{
 	 * and if not, creates the required classes.
 	 */
 	ensureDatabaseSchema():Promise<ojs.Class>{
+		winston.info("Generating dummy database");
 		return this.ensureUser().
 		then((createdClass:ojs.Class)=>{
 			return this.ensureProject();
