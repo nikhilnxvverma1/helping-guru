@@ -370,4 +370,5 @@ export function loggedIn(req:express.Request):boolean{
 	return true;//TODO use this before every request
 }
 
+//TODO this variable should be externalized
 const production=process.env.NODE_ENV=='production';
