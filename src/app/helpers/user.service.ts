@@ -5,6 +5,7 @@ import { Signup } from 'app/signup/signup';
 import { LoginAttempt } from 'app/login/login-attempt';
 import 'rxjs/Rx';
 
+/** Service used in making requests for login and signup */
 @Injectable()
 export class UserService {
 
