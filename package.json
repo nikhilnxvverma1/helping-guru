@@ -1,6 +1,7 @@
 {
   "name": "helping-guru",
   "version": "0.0.1",
+  "description":"Webapp which pairs novice programmers to expert",
   "angular-cli": {},
   "scripts": {
     "ng": "ng",
