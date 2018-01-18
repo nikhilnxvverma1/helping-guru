@@ -8,6 +8,7 @@ import { Thread } from '../../models/thread';
 import { Progression } from '../../models/progression';
 import { Contribution } from '../../models/contribution';
 
+/** Injectable service used in making several requests to the server */
 @Injectable()
 export class ProjectService {
 
