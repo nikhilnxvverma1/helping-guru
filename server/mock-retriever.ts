@@ -9,6 +9,7 @@ import Promise = require('bluebird');
 let request:any = require('request-promise');
 let mock_data:any = require('./MOCK_DATA.json');
 
+/** Dedicated class for obtaining dummy objects for receiver */
 export class MockRetriever{
 
 	/**
