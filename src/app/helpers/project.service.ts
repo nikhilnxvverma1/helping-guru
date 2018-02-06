@@ -15,7 +15,8 @@ export class ProjectService {
   constructor(
 	  private http:Http
   ) { }
-
+	  
+  	/** Returns the JSON response of projects for the currently logged in user */
 	projectForLoggedInUser():Observable<Project[]>{
 		console.debug("asking server for my projects");
 		return this.http.get("/api/my-projects").map((response:Response)=>{return this.toProjectList(response)});
