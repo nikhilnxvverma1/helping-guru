@@ -371,4 +371,4 @@ export function loggedIn(req:express.Request):boolean{
 }
 
 //TODO this variable should be externalized
-const production=process.env.NODE_ENV=='production';
+const production=process.env.NODE_ENV=='debug';
